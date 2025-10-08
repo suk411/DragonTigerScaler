@@ -9,7 +9,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // use storage to perform CRUD operations on the storage interface
   // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
 
-  app.post('/api/round/result', requireAuth, async (req, res) => {
+  app.post('/api/round/result', async (req, res) => {
     try {
       const currentRound = await storage.getCurrentRound();
 
