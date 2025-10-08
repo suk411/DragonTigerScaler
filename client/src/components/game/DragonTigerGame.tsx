@@ -2,13 +2,13 @@ import { useState } from "react";
 import casinoTable from "@/assets/image.png";
 import BettingAreaWithBets from "./BettingAreaWithBets";
 import BottomBar from "./BottomBar";
-import { useGameManager } from "@/hooks/useGameManager";
+import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import { Toaster } from "@/components/ui/toaster";
 
 export default function DragonTigerGame() {
   const [selectedChip, setSelectedChip] = useState<number | null>(null);
   const [timer] = useState(15);
-  const { balance } = useGameManager();
+  const { balance } = useGameManagerContext();
 
   return (
     <>

@@ -4,7 +4,7 @@ import GameCards from "./GameCards";
 import CountdownTimer from "./CountdownTimer";
 import TrendSection from "./TrendSection";
 import { useState } from "react";
-import { useGameManager } from "@/hooks/useGameManager";
+import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import CoinAnimation from "./CoinAnimation";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,7 +17,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
   const [currentPhase, setCurrentPhase] = useState<'betting' | 'revealing'>('betting');
   const [timeRemaining, setTimeRemaining] = useState(timer);
   const [animations, setAnimations] = useState<Array<{ id: string; targetId: string; amount: number }>>([]);
-  const { placeBet, getTotalBets, balance, currentRound } = useGameManager();
+  const { placeBet, getTotalBets, balance, currentRound } = useGameManagerContext();
   const { toast } = useToast();
 
   const handlePhaseChange = (phase: 'betting' | 'revealing', time: number) => {
