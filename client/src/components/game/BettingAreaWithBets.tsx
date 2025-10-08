@@ -13,6 +13,9 @@ interface BettingAreaProps {
   selectedChip: number | null;
 }
 
+// Define BetType for clarity
+type BetType = 'tie' | 'dragon' | 'tiger';
+
 export default function BettingAreaWithBets({ timer, selectedChip }: BettingAreaProps) {
   const [currentPhase, setCurrentPhase] = useState<'betting' | 'revealing'>('betting');
   const [timeRemaining, setTimeRemaining] = useState(timer);
@@ -25,31 +28,16 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
     setTimeRemaining(time);
   };
 
-  const handleBetClick = async (betType: string) => {
-    if (!selectedChip) {
-      toast({
-        title: "Select a chip",
-        description: "Please select a chip amount to place your bet",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  const handleBetClick = async (betType: BetType) => {
     if (currentPhase !== 'betting') {
-      toast({
-        title: "Betting closed",
-        description: "You can only bet during the betting phase (15 seconds)",
-        variant: "destructive",
-      });
       return;
     }
 
-    if (balance < selectedChip) {
-      toast({
-        title: "Insufficient balance",
-        description: "You don't have enough balance to place this bet",
-        variant: "destructive",
-      });
+    if (!selectedChip) {
+      return;
+    }
+
+    if (selectedChip > balance) {
       return;
     }
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PlayingCard from "./PlayingCard";
 
 interface CardProps {
   cardString: string | null;
@@ -7,41 +8,16 @@ interface CardProps {
 }
 
 function Card({ cardString, flipped, winner }: CardProps) {
-  // For now, use a simple colored card representation
-  // In production, you would import actual card SVGs
-  const getCardDisplay = () => {
-    if (!cardString) return { color: "#1e40af", text: "?" };
-    
-    const [rank, suit] = cardString.split("-");
-    const isRed = suit === "hearts" || suit === "diamonds";
-    const color = isRed ? "#dc2626" : "#1f2937";
-    const suitSymbol = {
-      hearts: "♥",
-      diamonds: "♦",
-      clubs: "♣",
-      spades: "♠"
-    }[suit] || "";
-    
-    return { color, text: `${rank.toUpperCase()} ${suitSymbol}` };
-  };
-
-  const cardDisplay = getCardDisplay();
+  const [rank, suit] = cardString?.split("-") || ["a", "spades"];
   
   return (
     <div className="card-wrapper">
       <div className={`card ${flipped ? "flipped" : ""} ${winner ? "winner" : ""}`}>
         <div className="card-face card-back">
-          <div className="w-full h-full bg-blue-900 rounded-lg border-2 border-blue-600 flex items-center justify-center">
-            <div className="text-4xl text-blue-300">🃏</div>
-          </div>
+          <PlayingCard rank={rank} suit={suit} flipped={false} />
         </div>
         <div className="card-face card-front">
-          <div 
-            className="w-full h-full bg-white rounded-lg border-2 border-gray-300 flex items-center justify-center font-bold text-lg"
-            style={{ color: cardDisplay.color }}
-          >
-            {cardDisplay.text}
-          </div>
+          <PlayingCard rank={rank} suit={suit} flipped={true} winner={winner} />
         </div>
       </div>
     </div>
@@ -118,6 +94,9 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
         }
         .winner .card-face {
           animation: glowZoom 0.6s ease-in-out 2;
+        }
+        .winner-card {
+          filter: drop-shadow(0 0 18px 4px gold);
         }
         @keyframes glowZoom {
           0% { transform: scale(1); filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); }
