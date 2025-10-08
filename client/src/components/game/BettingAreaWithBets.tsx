@@ -1,10 +1,11 @@
+
 import dragonBody from "@/assets/dragon-body.png";
 import tigerBody from "@/assets/tiger-body.png";
 import GameCards from "./GameCards";
 import CountdownTimer from "./CountdownTimer";
 import TrendSection from "./TrendSection";
 import BettingNotification from "./BettingNotification";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import CoinAnimation from "./CoinAnimation";
 import { useToast } from "@/hooks/use-toast";
@@ -14,55 +15,78 @@ interface BettingAreaProps {
   selectedChip: number | null;
 }
 
-// Define BetType for clarity
 type BetType = 'tie' | 'dragon' | 'tiger';
 
 export default function BettingAreaWithBets({ timer, selectedChip }: BettingAreaProps) {
   const [currentPhase, setCurrentPhase] = useState<'betting' | 'revealing'>('betting');
-  const [timeRemaining, setTimeRemaining] = useState(timer);
+  const [timeRemaining, setTimeRemaining] = useState(15);
   const [animations, setAnimations] = useState<Array<{ id: string; targetId: string; amount: number }>>([]);
   const [clickedBet, setClickedBet] = useState<BetType | null>(null);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
-  const { placeBet, getTotalBets, balance, currentRound } = useGameManagerContext();
+  const [winningBetArea, setWinningBetArea] = useState<BetType | null>(null);
+  const { placeBet, getTotalBets, balance, currentRound, updateBalance, clearBets } = useGameManagerContext();
   const { toast } = useToast();
 
-  const handlePhaseChange = (phase: 'betting' | 'revealing') => {
-    setCurrentPhase(phase);
-    setTimeRemaining(timer); // Reset timer on phase change
+  useEffect(() => {
+    // Show "Start Betting" on mount
+    setNotificationMessage('Start Betting');
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 2000);
 
-    if (phase === 'betting') {
-      // Show "Start Betting" notification
-      setNotificationMessage('Start Betting');
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 2000);
-    } else if (phase === 'revealing') {
-      // Show "Stop Betting" notification
-      setNotificationMessage('Stop Betting');
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 2000);
+    // Main game loop
+    const gameLoop = setInterval(() => {
+      setTimeRemaining(prev => {
+        if (currentPhase === 'betting') {
+          if (prev <= 1) {
+            // Switch to revealing phase
+            setCurrentPhase('revealing');
+            setNotificationMessage('Stop Betting');
+            setShowNotification(true);
+            setTimeout(() => setShowNotification(false), 2000);
+            return 10;
+          }
+          return prev - 1;
+        } else {
+          // Revealing phase
+          if (prev <= 1) {
+            // Switch back to betting phase
+            setCurrentPhase('betting');
+            setNotificationMessage('Start Betting');
+            setShowNotification(true);
+            setTimeout(() => setShowNotification(false), 2000);
+            setWinningBetArea(null);
+            return 15;
+          }
+          return prev - 1;
+        }
+      });
+    }, 1000);
 
-      // Simulate game result after 3 seconds
-      setTimeout(() => {
-        // This part should ideally be handled by an external game state management or API response
-        // For demonstration, we'll use a random winner.
-        const potentialWinners: ('dragon' | 'tiger' | 'tie')[] = ['dragon', 'tiger', 'tie'];
-        const winner = potentialWinners[Math.floor(Math.random() * potentialWinners.length)];
-        
-        // In a real scenario, you would likely update currentRound with the actual winner
-        // For now, we'll simulate setting the winning area and then reverting.
-        // This might need to be adjusted based on how currentRound is updated in the context.
-        
-        // setWinningArea(winner); // This would be the visual indicator
-        
-        setTimeout(() => {
-          // setWinningArea(null); // Clear visual indicator
-          setCurrentPhase('betting'); // Transition back to betting phase
-          setTimeRemaining(timer); // Reset timer for the next round
-        }, 2000);
-      }, 3000);
+    return () => clearInterval(gameLoop);
+  }, [currentPhase]);
+
+  // Handle winner glow at 4th second of revealing phase (timeRemaining = 6)
+  useEffect(() => {
+    if (currentPhase === 'revealing' && timeRemaining === 6 && currentRound?.winner) {
+      setWinningBetArea(currentRound.winner as BetType);
     }
-  };
+  }, [currentPhase, timeRemaining, currentRound]);
+
+  // Handle balance update at 5th second (timeRemaining = 5)
+  useEffect(() => {
+    if (currentPhase === 'revealing' && timeRemaining === 5) {
+      updateBalance();
+    }
+  }, [currentPhase, timeRemaining]);
+
+  // Clear bets and reset at the end of revealing phase
+  useEffect(() => {
+    if (currentPhase === 'revealing' && timeRemaining === 1) {
+      clearBets();
+      setWinningBetArea(null);
+    }
+  }, [currentPhase, timeRemaining]);
 
   const handleBetClick = async (betType: BetType) => {
     if (currentPhase !== 'betting') {
@@ -188,7 +212,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
       </div>
 
       <div className="absolute left-1/2" style={{ top: '29%', transform: 'translateX(-50%)' }}>
-        <CountdownTimer initial={timer} onPhaseChange={handlePhaseChange} />
+        <CountdownTimer initial={timeRemaining} currentTime={timeRemaining} />
       </div>
 
       <div className="absolute right-0" style={{ top: '36%', height: '10%', width: '80%' }}>
@@ -209,7 +233,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
         id="tie-betting-area"
         className={`game-element rounded-xl border-4 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
           clickedBet === 'tie' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
-          currentRound?.winner === 'tie' && currentPhase === 'revealing' && timeRemaining <= 7 && timeRemaining > 5 ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          winningBetArea === 'tie' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
           'border-blue-400'
         }`}
         style={{ bottom: '38%', left: '10%', width: '80%', height: '16%' }}
@@ -232,7 +256,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
         id="dragon-betting-area"
         className={`game-element rounded-xl border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
           clickedBet === 'dragon' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
-          currentRound?.winner === 'dragon' && currentPhase === 'revealing' && timeRemaining <= 7 && timeRemaining > 5 ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          winningBetArea === 'dragon' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
           'border-black'
         }`}
         style={{ bottom: '13%', left: '9%', width: '39%', height: '24%' }}
@@ -256,7 +280,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
         id="tiger-betting-area"
         className={`game-element rounded-xl border-2 bg-gradient-to-br from-red-900 to-yellow-700 shadow-lg cursor-pointer select-none flex items-center justify-center transition-all duration-300 ${
           clickedBet === 'tiger' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
-          currentRound?.winner === 'tiger' && currentPhase === 'revealing' && timeRemaining <= 7 && timeRemaining > 5 ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          winningBetArea === 'tiger' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
           'border-black'
         }`}
         style={{ bottom: '13%', right: '9%', width: '39%', height: '24%', zIndex: 10 }}

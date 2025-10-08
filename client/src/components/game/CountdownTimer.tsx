@@ -1,54 +1,34 @@
-import { useEffect, useState } from "react";
 import clockIcon from "@/assets/clock-icon.png";
 
 interface CountdownTimerProps {
   initial: number;
-  onEnd?: () => void;
-  onPhaseChange?: (phase: 'betting' | 'revealing', timeRemaining: number) => void;
+  currentTime?: number;
 }
 
-export default function CountdownTimer({ initial, onEnd, onPhaseChange }: CountdownTimerProps) {
-  const [time, setTime] = useState(initial);
-  const [isFifteen, setIsFifteen] = useState(true);
-
-  useEffect(() => {
-    const phase = isFifteen ? 'betting' : 'revealing';
-    if (onPhaseChange) {
-      onPhaseChange(phase, time);
-    }
-  }, [isFifteen, time, onPhaseChange]);
-
-  useEffect(() => {
-    if (time > 0) {
-      const interval = setInterval(() => {
-        setTime((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(interval);
-    } else {
-      const timeout = setTimeout(() => {
-        setIsFifteen((prev) => !prev);
-        setTime(isFifteen ? 10 : 15);
-        if (onEnd) onEnd();
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
-  }, [time, isFifteen, onEnd]);
+export default function CountdownTimer({ currentTime }: CountdownTimerProps) {
+  const displayTime = currentTime ?? 15;
 
   return (
-    <div className="flex items-center justify-center select-none">
+    <div className="relative flex items-center justify-center select-none">
       <div
-        className="relative flex items-center justify-center"
-        style={{ width: 65, height: 48 }}
+        className="relative rounded-full bg-gradient-to-br from-yellow-500 to-yellow-600 shadow-lg flex items-center justify-center"
+        style={{
+          width: "65px",
+          height: "65px",
+          border: "3px solid #b45309",
+        }}
       >
         <img
           src={clockIcon}
           alt="Clock"
-          style={{ width: 70, height: 48 }}
+          className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+          style={{ pointerEvents: "none" }}
         />
         <span
-          className="absolute pl-[2px] pb-[2px] inset-0 flex items-end justify-center font-bold text-lg text-[#443001]"
+          className="relative z-10 text-lg font-bold"
+          style={{ color: "#443001" }}
         >
-          {time}
+          {displayTime}
         </span>
       </div>
     </div>

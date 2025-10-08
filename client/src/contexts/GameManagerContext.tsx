@@ -1,5 +1,5 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from "react";
-import { useGameManager } from "@/hooks/useGameManager";
+
+import { createContext, useContext, useState, useEffect } from "react";
 
 interface GameRound {
   id: number;
@@ -13,50 +13,112 @@ interface GameManagerContextType {
   placeBet: (betType: string, amount: number) => Promise<boolean>;
   getTotalBets: (betType: string) => number;
   currentRound: GameRound;
+  updateBalance: () => void;
+  clearBets: () => void;
 }
 
 const GameManagerContext = createContext<GameManagerContextType | null>(null);
 
 export function GameManagerProvider({ children }: { children: React.ReactNode }) {
-  const [balance, setBalance] = useState(1000);
-  const [selectedChip, setSelectedChip] = useState<number | null>(null);
-  const [currentRound, setCurrentRound] = useState<any>(null);
-  const [gamePhase, setGamePhase] = useState<'betting' | 'revealing' | 'result'>('betting');
+  const [balance, setBalance] = useState(10000);
+  const [currentRound, setCurrentRound] = useState<GameRound>({
+    id: 1,
+    dragon_card: null,
+    tiger_card: null,
+    winner: null,
+  });
   const [bets, setBets] = useState<Record<string, number>>({
     dragon: 0,
     tiger: 0,
     tie: 0,
   });
 
+  // Generate new round every 25 seconds (15s betting + 10s revealing)
   useEffect(() => {
-    // Initialize round
-    const initRound = async () => {
-      try {
-        const response = await fetch('/api/round/start', { method: 'POST' });
-        const data = await response.json();
-        setCurrentRound(data.round);
-      } catch (error) {
-        console.error('Failed to start round:', error);
+    const generateRound = () => {
+      const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+      const ranks = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'];
+      
+      const dragonSuit = suits[Math.floor(Math.random() * suits.length)];
+      const dragonRank = ranks[Math.floor(Math.random() * ranks.length)];
+      const dragonCard = `${dragonRank}-${dragonSuit}`;
+      
+      const tigerSuit = suits[Math.floor(Math.random() * suits.length)];
+      const tigerRank = ranks[Math.floor(Math.random() * ranks.length)];
+      const tigerCard = `${tigerRank}-${tigerSuit}`;
+      
+      // Determine winner based on rank
+      const getRankValue = (rank: string) => {
+        const rankMap: Record<string, number> = {
+          'a': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
+          '8': 8, '9': 9, '10': 10, 'j': 11, 'q': 12, 'k': 13
+        };
+        return rankMap[rank] || 0;
+      };
+      
+      const dragonValue = getRankValue(dragonRank);
+      const tigerValue = getRankValue(tigerRank);
+      
+      let winner: string;
+      if (dragonValue > tigerValue) {
+        winner = 'dragon';
+      } else if (tigerValue > dragonValue) {
+        winner = 'tiger';
+      } else {
+        winner = 'tie';
       }
+      
+      setCurrentRound({
+        id: Date.now(),
+        dragon_card: dragonCard,
+        tiger_card: tigerCard,
+        winner: winner,
+      });
     };
-    initRound();
+
+    generateRound();
+    const interval = setInterval(generateRound, 25000);
+    return () => clearInterval(interval);
   }, []);
 
-  // These values would come from the useGameManager hook in a real implementation
-  // For now, we'll mock them to make the provider work
-  const gameManager = {
-    balance,
-    placeBet: async (betType: string, amount: number): Promise<boolean> => {
-      setBets(prevBets => ({ ...prevBets, [betType]: prevBets[betType] + amount }));
-      setBalance(prevBalance => prevBalance - amount);
-      return true;
-    },
-    getTotalBets: (betType: string): number => {
-      return bets[betType];
-    },
-    currentRound: currentRound || { id: 0, dragon_card: null, tiger_card: null, winner: null },
+  const placeBet = async (betType: string, amount: number): Promise<boolean> => {
+    if (balance < amount) return false;
+
+    setBets(prev => ({
+      ...prev,
+      [betType]: prev[betType as keyof typeof prev] + amount,
+    }));
+    setBalance(prev => prev - amount);
+    return true;
   };
 
+  const getTotalBets = (betType: string): number => {
+    return bets[betType as keyof typeof bets] || 0;
+  };
+
+  const updateBalance = () => {
+    if (!currentRound.winner) return;
+
+    const winnerBet = bets[currentRound.winner as keyof typeof bets];
+    if (winnerBet > 0) {
+      const multiplier = currentRound.winner === "tie" ? 10 : 2;
+      const winnings = winnerBet * multiplier;
+      setBalance(prev => prev + winnings);
+    }
+  };
+
+  const clearBets = () => {
+    setBets({ dragon: 0, tiger: 0, tie: 0 });
+  };
+
+  const gameManager = {
+    balance,
+    placeBet,
+    getTotalBets,
+    currentRound,
+    updateBalance,
+    clearBets,
+  };
 
   return (
     <GameManagerContext.Provider value={gameManager}>
