@@ -20,6 +20,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
   const [currentPhase, setCurrentPhase] = useState<'betting' | 'revealing'>('betting');
   const [timeRemaining, setTimeRemaining] = useState(timer);
   const [animations, setAnimations] = useState<Array<{ id: string; targetId: string; amount: number }>>([]);
+  const [clickedBet, setClickedBet] = useState<BetType | null>(null);
   const { placeBet, getTotalBets, balance, currentRound } = useGameManagerContext();
   const { toast } = useToast();
 
@@ -40,6 +41,10 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
     if (selectedChip > balance) {
       return;
     }
+
+    // Show green border feedback
+    setClickedBet(betType);
+    setTimeout(() => setClickedBet(null), 300);
 
     const animId = `${Date.now()}_${Math.random()}`;
     setAnimations(prev => [...prev, { id: animId, targetId: betType, amount: selectedChip }]);
@@ -158,7 +163,11 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
 
       <div 
         id="tie-betting-area"
-        className="game-element rounded-xl border-blue-400 border-4 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10"
+        className={`game-element rounded-xl border-4 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
+          clickedBet === 'tie' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
+          currentRound?.winner === 'tie' && currentPhase === 'revealing' && timeRemaining <= 7 && timeRemaining > 5 ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          'border-blue-400'
+        }`}
         style={{ bottom: '38%', left: '10%', width: '80%', height: '16%' }}
         onClick={() => handleBetClick('tie')}
         data-testid="bet-tie">
@@ -177,7 +186,11 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
 
       <div 
         id="dragon-betting-area"
-        className="game-element rounded-xl border-black border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10"
+        className={`game-element rounded-xl border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
+          clickedBet === 'dragon' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
+          currentRound?.winner === 'dragon' && currentPhase === 'revealing' && timeRemaining <= 7 && timeRemaining > 5 ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          'border-black'
+        }`}
         style={{ bottom: '13%', left: '9%', width: '39%', height: '24%' }}
         onClick={() => handleBetClick('dragon')}
         data-testid="bet-dragon">
@@ -197,7 +210,11 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
 
       <div 
         id="tiger-betting-area"
-        className="game-element rounded-xl border-black border-2 bg-gradient-to-br from-red-900 to-yellow-700 shadow-lg cursor-pointer select-none flex items-center justify-center"
+        className={`game-element rounded-xl border-2 bg-gradient-to-br from-red-900 to-yellow-700 shadow-lg cursor-pointer select-none flex items-center justify-center transition-all duration-300 ${
+          clickedBet === 'tiger' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
+          currentRound?.winner === 'tiger' && currentPhase === 'revealing' && timeRemaining <= 7 && timeRemaining > 5 ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          'border-black'
+        }`}
         style={{ bottom: '13%', right: '9%', width: '39%', height: '24%', zIndex: 10 }}
         onClick={() => handleBetClick('tiger')}
         data-testid="bet-tiger">

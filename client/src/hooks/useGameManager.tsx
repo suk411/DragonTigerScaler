@@ -23,6 +23,10 @@ export function useGameManager() {
     tiger_card: null,
     winner: null,
   });
+  const [isDragonSelected, setIsDragonSelected] = useState(false);
+  const [isTigerSelected, setIsTigerSelected] = useState(false);
+  const [isTieSelected, setIsTieSelected] = useState(false);
+  const [winningArea, setWinningArea] = useState<string | null>(null);
 
   const placeBet = async (betType: string, amount: number): Promise<boolean> => {
     if (balance < amount) return false;
@@ -37,6 +41,18 @@ export function useGameManager() {
       [betType]: prev[betType as keyof BetData] + amount,
     }));
 
+    // Highlight the betting area border
+    if (betType === 'dragon') setIsDragonSelected(true);
+    if (betType === 'tiger') setIsTigerSelected(true);
+    if (betType === 'tie') setIsTieSelected(true);
+
+    // Remove highlight after a short delay
+    setTimeout(() => {
+      if (betType === 'dragon') setIsDragonSelected(false);
+      if (betType === 'tiger') setIsTigerSelected(false);
+      if (betType === 'tie') setIsTieSelected(false);
+    }, 200); // 200ms for a quick flash
+
     return true;
   };
 
@@ -47,19 +63,37 @@ export function useGameManager() {
   // Simulate game rounds (for demo purposes)
   useEffect(() => {
     const interval = setInterval(() => {
-      // Generate random cards and winner every 25 seconds
+      // Determine the winner based on lower total bets, unless it's a tie
+      let winner = "tie";
+      const dragonTotal = getTotalBets('dragon');
+      const tigerTotal = getTotalBets('tiger');
+      const tieTotal = getTotalBets('tie');
+
+      if (dragonTotal < tigerTotal && dragonTotal < tieTotal) {
+        winner = "dragon";
+      } else if (tigerTotal < dragonTotal && tigerTotal < tieTotal) {
+        winner = "tiger";
+      } else if (dragonTotal === tigerTotal && dragonTotal < tieTotal) {
+        // If dragon and tiger bets are equal and lower than tie, choose one (e.g., dragon)
+        winner = "dragon";
+      } else if (dragonTotal === tieTotal && dragonTotal < tigerTotal) {
+        // If dragon and tie bets are equal and lower than tiger, choose one (e.g., dragon)
+        winner = "dragon";
+      } else if (tigerTotal === tieTotal && tigerTotal < dragonTotal) {
+        // If tiger and tie bets are equal and lower than dragon, choose one (e.g., tiger)
+        winner = "tiger";
+      } else if (dragonTotal === tigerTotal && dragonTotal === tieTotal) {
+        // If all are equal, it's a tie
+        winner = "tie";
+      }
+
+
+      // Generate random cards (these will be displayed but winner is determined by logic above)
       const cards = ["ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
       const suits = ["hearts", "diamonds", "clubs", "spades"];
-      
+
       const dragonCard = `${cards[Math.floor(Math.random() * cards.length)]}-${suits[Math.floor(Math.random() * suits.length)]}`;
       const tigerCard = `${cards[Math.floor(Math.random() * cards.length)]}-${suits[Math.floor(Math.random() * suits.length)]}`;
-      
-      const dragonValue = cards.indexOf(dragonCard.split('-')[0]);
-      const tigerValue = cards.indexOf(tigerCard.split('-')[0]);
-      
-      let winner = "tie";
-      if (dragonValue > tigerValue) winner = "dragon";
-      else if (tigerValue > dragonValue) winner = "tiger";
 
       setCurrentRound({
         id: Date.now(),
@@ -68,24 +102,38 @@ export function useGameManager() {
         winner,
       });
 
-      // Calculate winnings
-      if (currentBets[winner as keyof BetData] > 0) {
+      // Highlight the winning area
+      setWinningArea(winner);
+
+      // Reset winning area highlight after 2 seconds
+      setTimeout(() => {
+        setWinningArea(null);
+      }, 2000);
+
+      // Calculate winnings based on the determined winner
+      const currentWinnerBet = currentBets[winner as keyof BetData];
+      if (currentWinnerBet > 0) {
         const multiplier = winner === "tie" ? 10 : 2;
-        const winnings = currentBets[winner as keyof BetData] * multiplier;
+        const winnings = currentWinnerBet * multiplier;
         setBalance(prev => prev + winnings);
       }
 
-      // Reset current bets
+      // Reset current bets and total bets for the next round
       setCurrentBets({ dragon: 0, tiger: 0, tie: 0 });
-    }, 25000);
+      setTotalBets({ dragon: 0, tiger: 0, tie: 0 });
+    }, 15000); // Reduced interval for faster testing
 
     return () => clearInterval(interval);
-  }, [currentBets]);
+  }, []); // Removed dependencies that caused rapid re-triggering
 
   return {
     balance,
     placeBet,
     getTotalBets,
     currentRound,
+    isDragonSelected,
+    isTigerSelected,
+    isTieSelected,
+    winningArea,
   };
 }

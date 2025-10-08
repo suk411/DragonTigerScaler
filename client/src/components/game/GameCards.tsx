@@ -9,7 +9,7 @@ interface CardProps {
 
 function Card({ cardString, flipped, winner }: CardProps) {
   const [rank, suit] = cardString?.split("-") || ["a", "spades"];
-  
+
   return (
     <div className="card-wrapper">
       <div className={`card ${flipped ? "flipped" : ""} ${winner ? "winner" : ""}`}>
@@ -35,6 +35,8 @@ interface GameCardsProps {
 export default function GameCards({ currentPhase, timeRemaining, dragonCard, tigerCard, roundWinner }: GameCardsProps) {
   const [flipped, setFlipped] = useState([false, false]);
   const [winner, setWinner] = useState<number | null>(null);
+
+  const showGlow = currentPhase === 'revealing' && timeRemaining <= 7 && timeRemaining > 5;
 
   useEffect(() => {
     if (currentPhase === 'betting') {
@@ -102,6 +104,9 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
           0% { transform: scale(1); filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); }
           50% { transform: scale(1.09); filter: drop-shadow(0 0 18px 4px gold); }
           100% { transform: scale(1); filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); }
+        }
+        .betting-area.green-border {
+            border: 2px solid green;
         }
       `}</style>
       <div className="flex gap-24 justify-center items-center bg-transparent">
