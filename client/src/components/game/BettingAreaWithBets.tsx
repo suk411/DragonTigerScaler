@@ -3,6 +3,7 @@ import tigerBody from "@/assets/tiger-body.png";
 import GameCards from "./GameCards";
 import CountdownTimer from "./CountdownTimer";
 import TrendSection from "./TrendSection";
+import BettingNotification from "./BettingNotification";
 import { useState } from "react";
 import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import CoinAnimation from "./CoinAnimation";
@@ -21,12 +22,46 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
   const [timeRemaining, setTimeRemaining] = useState(timer);
   const [animations, setAnimations] = useState<Array<{ id: string; targetId: string; amount: number }>>([]);
   const [clickedBet, setClickedBet] = useState<BetType | null>(null);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
   const { placeBet, getTotalBets, balance, currentRound } = useGameManagerContext();
   const { toast } = useToast();
 
-  const handlePhaseChange = (phase: 'betting' | 'revealing', time: number) => {
+  const handlePhaseChange = (phase: 'betting' | 'revealing') => {
     setCurrentPhase(phase);
-    setTimeRemaining(time);
+    setTimeRemaining(timer); // Reset timer on phase change
+
+    if (phase === 'betting') {
+      // Show "Start Betting" notification
+      setNotificationMessage('Start Betting');
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 2000);
+    } else if (phase === 'revealing') {
+      // Show "Stop Betting" notification
+      setNotificationMessage('Stop Betting');
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 2000);
+
+      // Simulate game result after 3 seconds
+      setTimeout(() => {
+        // This part should ideally be handled by an external game state management or API response
+        // For demonstration, we'll use a random winner.
+        const potentialWinners: ('dragon' | 'tiger' | 'tie')[] = ['dragon', 'tiger', 'tie'];
+        const winner = potentialWinners[Math.floor(Math.random() * potentialWinners.length)];
+        
+        // In a real scenario, you would likely update currentRound with the actual winner
+        // For now, we'll simulate setting the winning area and then reverting.
+        // This might need to be adjusted based on how currentRound is updated in the context.
+        
+        // setWinningArea(winner); // This would be the visual indicator
+        
+        setTimeout(() => {
+          // setWinningArea(null); // Clear visual indicator
+          setCurrentPhase('betting'); // Transition back to betting phase
+          setTimeRemaining(timer); // Reset timer for the next round
+        }, 2000);
+      }, 3000);
+    }
   };
 
   const handleBetClick = async (betType: BetType) => {
@@ -39,6 +74,11 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
     }
 
     if (selectedChip > balance) {
+      toast({
+        title: "Insufficient balance",
+        description: "You don't have enough balance to place this bet.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -118,6 +158,10 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
           }
         `}
       </style>
+
+      {showNotification && (
+        <BettingNotification message={notificationMessage} />
+      )}
 
       {animations.map(anim => (
         <CoinAnimation
