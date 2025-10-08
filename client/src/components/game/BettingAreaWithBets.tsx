@@ -183,9 +183,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
         `}
       </style>
 
-      {showNotification && (
-        <BettingNotification message={notificationMessage} />
-      )}
+      <BettingNotification message={notificationMessage} show={showNotification} />
 
       {animations.map(anim => (
         <CoinAnimation

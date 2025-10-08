@@ -33,12 +33,10 @@ export default function BettingNotification({ message, show }: BettingNotificati
         clearTimeout(exitTimer);
         clearTimeout(hideTimer);
       };
-    } else {
-      setAnimationState('hidden');
     }
-  }, [show]);
+  }, [show, message]);
 
-  if (animationState === 'hidden') return null;
+  if (!show && animationState === 'hidden') return null;
 
   const getTransform = () => {
     switch (animationState) {
