@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fantasy Dragon vs Tiger Casino Game Design System
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Base mystical theme */
+    --background: 240 25% 8%;
+    --foreground: 280 20% 95%;
+
+    /* Cards and surfaces */
+    --card: 245 30% 12%;
+    --card-foreground: 280 15% 92%;
+
+    --popover: 240 25% 10%;
+    --popover-foreground: 280 20% 95%;
+
+    /* Game primary colors */
+    --primary: 185 100% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Dragon theme (blue/purple) */
+    --dragon: 250 80% 45%;
+    --dragon-foreground: 280 20% 95%;
+    --dragon-glow: 250 100% 60%;
+
+    /* Tiger theme (orange/red) */
+    --tiger: 25 90% 55%;
+    --tiger-foreground: 0 0% 100%;
+    --tiger-glow: 20 100% 60%;
+
+    /* Gold accents */
+    --gold: 45 100% 55%;
+    --gold-foreground: 45 30% 15%;
+    --gold-glow: 50 100% 70%;
+
+    /* Game elements */
+    --chip-border: 220 25% 25%;
+    --betting-area: 240 40% 15%;
+    --mystical-glow: 280 80% 50%;
+
+    /* UI elements */
+    --secondary: 245 30% 18%;
+    --secondary-foreground: 280 15% 88%;
+
+    --muted: 240 25% 15%;
+    --muted-foreground: 240 10% 65%;
+
+    --accent: 280 60% 40%;
+    --accent-foreground: 280 20% 95%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 20% 25%;
+    --input: 240 25% 18%;
+    --ring: 185 100% 45%;
+
+    --radius: 1rem;
+
+    /* Custom gradients */
+    --gradient-mystical: linear-gradient(135deg, hsl(var(--background)), hsl(240 40% 12%));
+    --gradient-dragon: linear-gradient(135deg, hsl(var(--dragon)), hsl(250 60% 25%));
+    --gradient-tiger: linear-gradient(135deg, hsl(var(--tiger)), hsl(15 80% 35%));
+    --gradient-gold: linear-gradient(135deg, hsl(var(--gold)), hsl(40 80% 45%));
+    --gradient-play: linear-gradient(135deg, hsl(var(--primary)), hsl(180 80% 25%));
+
+    /* Shadows and glows */
+    --shadow-mystical: 0 10px 30px -5px hsl(var(--mystical-glow) / 0.3);
+    --shadow-dragon: 0 5px 20px hsl(var(--dragon-glow) / 0.4);
+    --shadow-tiger: 0 5px 20px hsl(var(--tiger-glow) / 0.4);
+    --shadow-gold: 0 5px 15px hsl(var(--gold-glow) / 0.5);
+
+    /* Animations */
+    --transition-mystical: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-glow: box-shadow 0.3s ease-in-out;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
