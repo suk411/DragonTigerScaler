@@ -350,7 +350,7 @@ export default function BettingAreaWithBets({
 
       <div
         className="absolute left-1/2"
-        style={{ top: "20%", transform: "translateX(-50%)", zIndex: 60 }}
+        style={{ top: "24%", transform: "translateX(-50%)", zIndex: 60 }}
       >
         <BettingNotification
           message={notificationMessage}
