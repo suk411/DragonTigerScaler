@@ -284,11 +284,6 @@ export default function BettingAreaWithBets({
         `}
       </style>
 
-      <BettingNotification
-        message={notificationMessage}
-        show={showNotification}
-      />
-
       {animations.map((anim) => (
         <CoinAnimation
           key={anim.id}
@@ -350,6 +345,16 @@ export default function BettingAreaWithBets({
           initial={timer}
           currentTime={timeRemaining}
           currentPhase={currentPhase}
+        />
+      </div>
+
+      <div
+        className="absolute left-1/2"
+        style={{ top: "20%", transform: "translateX(-50%)", zIndex: 60 }}
+      >
+        <BettingNotification
+          message={notificationMessage}
+          show={showNotification}
         />
       </div>
 

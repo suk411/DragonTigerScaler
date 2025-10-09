@@ -28,9 +28,8 @@ export default function BettingNotification({ message, show }: BettingNotificati
 
   return (
     <div
-      className="fixed left-1/2 top-1/2 z-50 betting-notification-container"
+      className="notification-container"
       style={{
-        transform: 'translate(-50%, -50%)',
         pointerEvents: 'none',
       }}
     >
@@ -40,80 +39,76 @@ export default function BettingNotification({ message, show }: BettingNotificati
       
       <style>
         {`
-          @keyframes glowPulse {
+          @keyframes fadeInOut {
             0% {
               opacity: 0;
-              transform: scale(0.8);
-              filter: blur(10px);
+              transform: scale(0.9) translateY(-10px);
             }
-            50% {
+            20% {
               opacity: 1;
-              transform: scale(1.1);
-              filter: blur(0px);
+              transform: scale(1) translateY(0);
+            }
+            80% {
+              opacity: 1;
+              transform: scale(1) translateY(0);
             }
             100% {
               opacity: 0;
-              transform: scale(0.8);
-              filter: blur(10px);
+              transform: scale(0.9) translateY(-10px);
             }
           }
 
-          .betting-notification-container {
-            animation: glowPulse 1s ease-in-out;
+          .notification-container {
+            animation: fadeInOut 1s ease-in-out;
           }
 
           .notification-content {
-            background: linear-gradient(180deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
-            border: 3px solid #8B4513;
-            border-radius: 20px;
-            padding: 20px 60px;
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.95), rgba(59, 130, 246, 0.95));
+            border: 2px solid rgba(147, 51, 234, 0.8);
+            border-radius: 12px;
+            padding: 12px 32px;
             box-shadow: 
-              0 0 60px rgba(255, 215, 0, 0.9),
-              0 0 100px rgba(255, 165, 0, 0.7),
-              0 10px 30px rgba(0, 0, 0, 0.5),
-              inset 0 2px 10px rgba(255, 255, 255, 0.3),
-              inset 0 -2px 10px rgba(0, 0, 0, 0.3);
+              0 0 30px rgba(147, 51, 234, 0.6),
+              0 0 50px rgba(59, 130, 246, 0.4),
+              inset 0 2px 8px rgba(147, 51, 234, 0.4),
+              0 4px 15px rgba(0, 0, 0, 0.4);
             position: relative;
+            backdrop-filter: blur(10px);
           }
 
           .notification-content::before {
             content: '';
             position: absolute;
-            top: -3px;
-            left: -3px;
-            right: -3px;
-            bottom: -3px;
-            background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700);
-            border-radius: 20px;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.5), rgba(59, 130, 246, 0.5));
+            border-radius: 12px;
             z-index: -1;
-            opacity: 0.8;
-            filter: blur(15px);
+            opacity: 0.6;
+            filter: blur(8px);
           }
 
           .notification-text {
-            font-size: 48px;
+            font-size: 24px;
             font-weight: bold;
-            font-style: italic;
             color: #FFFFFF;
             text-shadow: 
-              3px 3px 6px rgba(0, 0, 0, 0.8),
-              -1px -1px 2px rgba(255, 255, 255, 0.3),
-              0 0 30px rgba(255, 215, 0, 0.8),
-              0 0 50px rgba(255, 165, 0, 0.6);
+              0 2px 4px rgba(0, 0, 0, 0.8),
+              0 0 20px rgba(147, 51, 234, 0.8),
+              0 0 30px rgba(59, 130, 246, 0.6);
             white-space: nowrap;
-            background: linear-gradient(180deg, #FFFFFF 0%, #FFE4B5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: 1px;
           }
 
           @media (max-width: 768px) {
             .notification-content {
-              padding: 15px 40px;
+              padding: 10px 24px;
             }
             
             .notification-text {
-              font-size: 36px;
+              font-size: 20px;
             }
           }
         `}
