@@ -24,45 +24,53 @@ export default function WinnersSection({ winners }: WinnersSectionProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3 h-full justify-between">
-      <div 
-        className="text-center text-yellow-400 font-bold text-sm px-3 py-1 rounded-t-lg"
-        style={{
-          background: 'linear-gradient(135deg, rgba(88, 28, 135, 0.6), rgba(59, 130, 246, 0.4))',
-          border: '2px solid rgba(234, 179, 8, 0.6)',
-          borderBottom: '1px solid rgba(234, 179, 8, 0.3)'
-        }}
-      >
-        🏆 WINNERS
-      </div>
-      
+    <div className="flex flex-col gap-4 h-full justify-start pt-2">
       {displayWinners.map((winner, index) => (
         <div
           key={winner.id}
-          className="flex items-center gap-2 px-2 py-2 rounded-lg"
-          style={{
-            background: 'linear-gradient(135deg, rgba(88, 28, 135, 0.4), rgba(59, 130, 246, 0.3))',
-            border: '2px solid rgba(234, 179, 8, 0.5)',
-            boxShadow: '0 2px 8px rgba(234, 179, 8, 0.2)'
-          }}
+          className="flex flex-col items-center gap-1 relative"
         >
+          {/* Show WINNERS heading only on first avatar */}
+          {index === 0 && (
+            <div 
+              className="absolute -top-6 text-center text-yellow-400 font-bold text-xs px-2 py-0.5 rounded"
+              style={{
+                background: 'linear-gradient(135deg, rgba(88, 28, 135, 0.8), rgba(59, 130, 246, 0.6))',
+                border: '2px solid rgba(234, 179, 8, 0.6)',
+              }}
+            >
+              🏆 WINNERS
+            </div>
+          )}
+          
+          {/* Avatar with border only */}
           {winner.avatar ? (
             <img 
               src={winner.avatar} 
-              alt={winner.username}
-              className="w-10 h-10 rounded-full border-2 border-yellow-400"
+              alt={`Winner ${index + 1}`}
+              className="w-12 h-12 rounded-full border-2 border-yellow-400 object-cover"
+              onError={(e) => {
+                // Fallback if image fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                if (target.nextElementSibling) {
+                  (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                }
+              }}
             />
-          ) : (
-            <div className="w-10 h-10 rounded-full border-2 border-gray-600 bg-gray-800"></div>
-          )}
+          ) : null}
           
-          <div className="flex-1 min-w-0">
-            <div className="text-white text-xs font-semibold truncate">
-              {winner.username}
-            </div>
-            <div className="text-yellow-400 text-xs font-bold">
-              {winner.amount > 0 ? `₹${winner.amount.toLocaleString()}` : '---'}
-            </div>
+          {/* Fallback avatar placeholder */}
+          <div 
+            className="w-12 h-12 rounded-full border-2 border-gray-600 bg-gray-800 flex items-center justify-center"
+            style={{ display: winner.avatar ? 'none' : 'flex' }}
+          >
+            <span className="text-gray-500 text-xs">👤</span>
+          </div>
+          
+          {/* Balance below avatar */}
+          <div className="text-yellow-400 text-xs font-bold">
+            {winner.amount > 0 ? `₹${winner.amount.toLocaleString()}` : '---'}
           </div>
         </div>
       ))}
