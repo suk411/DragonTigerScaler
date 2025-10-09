@@ -1,3 +1,4 @@
+
 interface PlayingCardProps {
   rank: string;
   suit: string;
@@ -39,7 +40,7 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
         <>
           {/* Card Front */}
           <rect width="63" height="91" rx="8" fill="white" stroke="#d1d5db" strokeWidth="2"/>
-
+          
           {/* Top-left corner */}
           <text x="8" y="18" fontSize="14" fontWeight="bold" fill={color}>
             {displayRank}
@@ -47,12 +48,12 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
           <text x="8" y="34" fontSize="16" fill={color}>
             {suitSymbol}
           </text>
-
+          
           {/* Center suit symbol */}
           <text x="31.5" y="55" fontSize="28" fill={color} textAnchor="middle">
             {suitSymbol}
           </text>
-
+          
           {/* Bottom-right corner (rotated) */}
           <g transform="rotate(180, 31.5, 45.5)">
             <text x="8" y="18" fontSize="14" fontWeight="bold" fill={color}>
@@ -67,10 +68,10 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
         <>
           {/* Card Back - Red and White Checkered Pattern */}
           <rect width="63" height="91" rx="8" fill="white" stroke="white" strokeWidth="3"/>
-
+          
           {/* Inner border */}
           <rect x="6" y="6" width="51" height="79" rx="4" fill="none" stroke="#e5e7eb" strokeWidth="1"/>
-
+          
           {/* Checkered pattern */}
           <defs>
             <pattern id="checkerboard" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
@@ -81,12 +82,11 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
             </pattern>
           </defs>
           <rect x="10" y="10" width="43" height="71" rx="3" fill="url(#checkerboard)"/>
-
+          
           {/* Center overlay for subtle depth */}
           <rect x="10" y="10" width="43" height="71" rx="3" fill="white" opacity="0.1"/>
         </>
       )}
     </svg>
-    </>
   );
 }

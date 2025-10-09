@@ -182,7 +182,7 @@ export default function BettingAreaWithBets({
           .flame-particle:nth-child(1) { left: 12%; animation-delay: 0s; }
           .flame-particle:nth-child(2) { left: 45%; animation-delay: 1.3s; }
           .flame-particle:nth-child(3) { left: 77%; animation-delay: 2.6s; }
-
+          
           .water-container {
             position: absolute;
             bottom: 0;
@@ -207,7 +207,7 @@ export default function BettingAreaWithBets({
           .water-particle:nth-child(1) { left: 12%; animation-delay: 0s; }
           .water-particle:nth-child(2) { left: 45%; animation-delay: 1.3s; }
           .water-particle:nth-child(3) { left: 77%; animation-delay: 2.6s; }
-
+          
           @keyframes particleUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-90px) scale(1.4); }
@@ -227,26 +227,20 @@ export default function BettingAreaWithBets({
             position: absolute;
           }
 
-          /* Progressive yellow border animation - inset to stay within borders */
+          /* Progressive yellow border animation */
           @keyframes progressiveYellowBorder {
             0% {
-              box-shadow: inset 0 0 20px 5px rgba(250, 204, 21, 0.5);
-              border-color: rgba(250, 204, 21, 0.7);
+              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
             }
             50% {
-              box-shadow: inset 0 0 50px 15px rgba(250, 204, 21, 1);
-              border-color: rgba(250, 204, 21, 1);
+              box-shadow: 0 0 0 10px rgba(250, 204, 21, 0.7);
             }
             100% {
-              box-shadow: inset 0 0 20px 5px rgba(250, 204, 21, 0.5);
-              border-color: rgba(250, 204, 21, 0.7);
+              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
             }
           }
           .border-winning {
-            animation: progressiveYellowBorder 1s ease-in-out infinite !important;
-            border-width: 3px !important;
-            position: relative;
-            z-index: 20 !important;
+            animation: progressiveYellowBorder 2s infinite;
           }
 
           /* Decorative border container */
