@@ -1,8 +1,5 @@
 import dragonBody from "@/assets/dragon-body.png";
 import tigerBody from "@/assets/tiger-body.png";
-import avatar1 from "@/assets/avatar-1.png";
-import avatar2 from "@/assets/avatar-2.png";
-import avatar3 from "@/assets/avatar-3.png";
 import GameCards from "./GameCards";
 import CountdownTimer from "./CountdownTimer";
 import TrendSection from "./TrendSection";
@@ -374,17 +371,17 @@ export default function BettingAreaWithBets({
       <div
         className="absolute"
         style={{ 
-          top: "38%", 
-          left: "5%", 
+          top: "23%", 
+          left: "2%", 
           width: "17%", 
           height: "40.8%"
         }}
       >
         <WinnersSection 
           winners={[
-            { id: '1', avatar: avatar1, username: 'P188095', amount: 1005377 },
-            { id: '2', avatar: avatar2, username: 'G260679', amount: 877480 },
-            { id: '3', avatar: avatar3, username: 'Zoe', amount: 88237 }
+            { id: '1', avatar: '/placeholder-avatar-1.png', username: 'P188095', amount: 1005377 },
+            { id: '2', avatar: '/placeholder-avatar-2.png', username: 'G260679', amount: 877480 },
+            { id: '3', avatar: '/placeholder-avatar-3.png', username: 'Zoe', amount: 88237 }
           ]}
         />
       </div>
@@ -393,17 +390,17 @@ export default function BettingAreaWithBets({
       <div
         className="absolute"
         style={{ 
-          top: "38%", 
-          right: "5%", 
+          top: "23%", 
+          right: "2%", 
           width: "17%", 
           height: "40.8%"
         }}
       >
         <LuckySection 
           luckyPlayers={[
-            { id: '1', avatar: avatar3, username: 'Lucky1', amount: 500000 },
-            { id: '2', avatar: avatar1, username: 'Lucky2', amount: 350000 },
-            { id: '3', avatar: avatar2, username: 'Lucky3', amount: 125000 }
+            { id: '1', avatar: '/placeholder-avatar-4.png', username: 'Lucky1', amount: 500000 },
+            { id: '2', avatar: '/placeholder-avatar-5.png', username: 'Lucky2', amount: 350000 },
+            { id: '3', avatar: '/placeholder-avatar-6.png', username: 'Lucky3', amount: 125000 }
           ]}
         />
       </div>
