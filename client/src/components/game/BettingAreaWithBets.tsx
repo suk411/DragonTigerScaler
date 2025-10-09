@@ -293,7 +293,7 @@ export default function BettingAreaWithBets({
 
       <div
         className="absolute left-1/2"
-        style={{ top: "20%", transform: "translateX(-50%)" }}
+        style={{ top: "4%", transform: "translateX(-50%)" }}
       >
         <CountdownTimer
           initial={timer}
@@ -311,7 +311,7 @@ export default function BettingAreaWithBets({
 
       <div
         className="absolute left-1/2"
-        style={{ top: "15%", transform: "translateX(-50%)" }}
+        style={{ top: "3.5%", transform: "translateX(-50%)" }}
       >
         <GameCards
           currentPhase={currentPhase}
