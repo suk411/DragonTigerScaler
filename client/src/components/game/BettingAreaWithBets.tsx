@@ -371,8 +371,8 @@ export default function BettingAreaWithBets({
       <div
         className="absolute"
         style={{ 
-          top: "23%", 
-          left: "2%", 
+          top: "38%", 
+          left: "5%", 
           width: "17%", 
           height: "40.8%"
         }}
@@ -390,8 +390,8 @@ export default function BettingAreaWithBets({
       <div
         className="absolute"
         style={{ 
-          top: "23%", 
-          right: "2%", 
+          top: "38%", 
+          right: "5%", 
           width: "17%", 
           height: "40.8%"
         }}
