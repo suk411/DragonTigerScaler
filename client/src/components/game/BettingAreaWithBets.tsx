@@ -4,6 +4,7 @@ import GameCards from "./GameCards";
 import CountdownTimer from "./CountdownTimer";
 import TrendSection from "./TrendSection";
 import BettingNotification from "./BettingNotification";
+import StarTrendAnimation from "./StarTrendAnimation";
 import { useState, useEffect } from "react";
 import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import CoinAnimation from "./CoinAnimation";
@@ -31,6 +32,8 @@ export default function BettingAreaWithBets({
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [winningBetArea, setWinningBetArea] = useState<BetType | null>(null);
+  const [showStarAnimation, setShowStarAnimation] = useState(false);
+  const [starAnimationBetType, setStarAnimationBetType] = useState<BetType | null>(null);
   const {
     placeBet,
     getTotalBets,
@@ -79,14 +82,18 @@ export default function BettingAreaWithBets({
     return () => clearInterval(gameLoop);
   }, [currentPhase]);
 
-  // Handle winner glow at 4th second of revealing phase (timeRemaining = 6)
+  // Handle winner glow and star animation at 4th second of revealing phase (timeRemaining = 6)
   useEffect(() => {
     if (
       currentPhase === "revealing" &&
       timeRemaining === 6 &&
       currentRound?.winner
     ) {
-      setWinningBetArea(currentRound.winner as BetType);
+      const winner = currentRound.winner as BetType;
+      setWinningBetArea(winner);
+      // Trigger star animation
+      setStarAnimationBetType(winner);
+      setShowStarAnimation(true);
     }
   }, [currentPhase, timeRemaining, currentRound]);
 
@@ -227,20 +234,32 @@ export default function BettingAreaWithBets({
             position: absolute;
           }
 
-          /* Progressive yellow border animation */
+          /* Progressive yellow border animation - contained within area */
           @keyframes progressiveYellowBorder {
             0% {
-              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
+              box-shadow: inset 0 0 0px 0px rgba(250, 204, 21, 0.9);
             }
             50% {
-              box-shadow: 0 0 0 10px rgba(250, 204, 21, 0.7);
+              box-shadow: inset 0 0 30px 10px rgba(250, 204, 21, 0.9);
             }
             100% {
-              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
+              box-shadow: inset 0 0 0px 0px rgba(250, 204, 21, 0.9);
             }
           }
           .border-winning {
             animation: progressiveYellowBorder 2s infinite;
+            overflow: hidden;
+          }
+          
+          /* Blur effects for creatures */
+          .dragon-blur {
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+          }
+          
+          .tiger-blur {
+            -webkit-mask-image: linear-gradient(to left, transparent 0%, black 30%, black 100%);
+            mask-image: linear-gradient(to left, transparent 0%, black 30%, black 100%);
           }
 
           /* Decorative border container */
@@ -276,6 +295,16 @@ export default function BettingAreaWithBets({
         />
       ))}
 
+      {showStarAnimation && starAnimationBetType && (
+        <StarTrendAnimation
+          startBetType={starAnimationBetType}
+          onComplete={() => {
+            setShowStarAnimation(false);
+            setStarAnimationBetType(null);
+          }}
+        />
+      )}
+
       <div
         className="creature-container animate-upDownImg"
         style={{ top: "2%", left: "10%" }}
@@ -283,6 +312,7 @@ export default function BettingAreaWithBets({
         <img
           src={dragonBody}
           alt="Dragon"
+          className="dragon-blur"
           style={{ width: "100%", height: "auto" }}
         />
         <div className="water-container">
@@ -299,6 +329,7 @@ export default function BettingAreaWithBets({
         <img
           src={tigerBody}
           alt="Tiger"
+          className="tiger-blur"
           style={{ width: "100%", height: "auto" }}
         />
         <div className="flame-container">
@@ -348,7 +379,7 @@ export default function BettingAreaWithBets({
           clickedBet === "tie"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tie"
-              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-100 border-winning"
+              ? "border-yellow-400 scale-100 border-winning"
               : "border-black"
         }`}
         style={{ bottom: "25%", left: "43%", width: "14%", height: "28%" }}
@@ -378,7 +409,7 @@ export default function BettingAreaWithBets({
           clickedBet === "dragon"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "dragon"
-              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-100 border-winning"
+              ? "border-yellow-400 scale-100 border-winning"
               : "border-black"
         }`}
         style={{ bottom: "25%", left: "23%", width: "20%", height: "28%" }}
@@ -409,7 +440,7 @@ export default function BettingAreaWithBets({
           clickedBet === "tiger"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tiger"
-              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-99 border-winning"
+              ? "border-yellow-400 scale-99 border-winning"
               : "border-black"
         }`}
         style={{

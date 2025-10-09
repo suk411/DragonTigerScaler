@@ -67,8 +67,8 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
       <style>{`
         .card-wrapper {
           perspective: 1200px;
-          width: 90px;
-          height: 130px;
+          width: 120px;
+          height: 170px;
           margin: 8px;
         }
         .card {
@@ -110,7 +110,7 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
           100% { transform: scale(1); filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); }
         }
       `}</style>
-      <div className="flex gap-24 justify-center items-center bg-transparent">
+      <div className="flex gap-32 justify-center items-center bg-transparent">
         <Card cardString={dragonCard} flipped={flipped[0]} winner={winner === 0} />
         <Card cardString={tigerCard} flipped={flipped[1]} winner={winner === 1} />
       </div>
