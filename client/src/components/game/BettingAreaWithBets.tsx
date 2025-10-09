@@ -215,8 +215,8 @@ export default function BettingAreaWithBets({
           .creature-container {
             position: absolute;
             top: 0%;
-            width: 75%;
-            max-width: 540px;
+            width: 50%;
+            max-width: 360px;
             user-select: none;
             z-index: 20;
             display: flex;

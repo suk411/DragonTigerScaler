@@ -18,26 +18,26 @@ export default function CountdownTimer({ currentTime, currentPhase }: CountdownT
       <div
         className="relative rounded-full bg-gray-800/90 shadow-lg flex flex-col items-center justify-center"
         style={{
-          width: "80px",
-          height: "80px",
+          width: "110px",
+          height: "110px",
         }}
       >
         {/* Progressive yellow border */}
         <svg
           className="absolute inset-0 -rotate-90"
-          width="80"
-          height="80"
+          width="110"
+          height="110"
           style={{ filter: 'drop-shadow(0 0 8px rgba(234, 179, 8, 0.8))' }}
         >
           <circle
-            cx="40"
-            cy="40"
-            r="37"
+            cx="55"
+            cy="55"
+            r="51"
             fill="none"
             stroke="#eab308"
-            strokeWidth="4"
-            strokeDasharray={`${2 * Math.PI * 37}`}
-            strokeDashoffset={`${2 * Math.PI * 37 * (1 - progress / 100)}`}
+            strokeWidth="5"
+            strokeDasharray={`${2 * Math.PI * 51}`}
+            strokeDashoffset={`${2 * Math.PI * 51 * (1 - progress / 100)}`}
             strokeLinecap="round"
             style={{
               transition: 'stroke-dashoffset 1s linear'
@@ -47,7 +47,7 @@ export default function CountdownTimer({ currentTime, currentPhase }: CountdownT
 
         {/* Timer number */}
         <span
-          className="relative z-10 text-2xl font-bold"
+          className="relative z-10 text-3xl font-bold"
           style={{ color: "#fbbf24" }}
         >
           {displayTime}
@@ -55,7 +55,7 @@ export default function CountdownTimer({ currentTime, currentPhase }: CountdownT
         
         {/* Phase text */}
         <span
-          className="relative z-10 text-xs font-semibold capitalize"
+          className="relative z-10 text-sm font-semibold capitalize"
           style={{ color: "#fbbf24" }}
         >
           {phase === 'betting' ? 'Betting' : 'Result'}

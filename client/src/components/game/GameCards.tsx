@@ -67,9 +67,9 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
       <style>{`
         .card-wrapper {
           perspective: 1200px;
-          width: 63px;
-          height: 91px;
-          margin: 6px;
+          width: 90px;
+          height: 130px;
+          margin: 8px;
         }
         .card {
           position: relative;
