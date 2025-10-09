@@ -1,6 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import PlayingCard from './PlayingCard'; // Assuming PlayingCard component is in a separate file
-import './GameCards.css';
+import PlayingCard from './PlayingCard';
 
 interface GameCardsProps {
   currentPhase: 'betting' | 'revealing';
