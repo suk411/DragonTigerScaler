@@ -1,4 +1,3 @@
-
 import dragonBody from "@/assets/dragon-body.png";
 import tigerBody from "@/assets/tiger-body.png";
 import GameCards from "./GameCards";
@@ -180,6 +179,22 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
           .game-element {
             position: absolute;
           }
+
+          /* Progressive yellow border animation */
+          @keyframes progressiveYellowBorder {
+            0% {
+              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
+            }
+            50% {
+              box-shadow: 0 0 0 10px rgba(250, 204, 21, 0.7);
+            }
+            100% {
+              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
+            }
+          }
+          .border-winning {
+            animation: progressiveYellowBorder 2s infinite;
+          }
         `}
       </style>
 
@@ -210,7 +225,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
       </div>
 
       <div className="absolute left-1/2" style={{ top: '29%', transform: 'translateX(-50%)' }}>
-        <CountdownTimer initial={timeRemaining} currentTime={timeRemaining} />
+        <CountdownTimer initial={timer} currentTime={timeRemaining} currentPhase={currentPhase} />
       </div>
 
       <div className="absolute right-0" style={{ top: '36%', height: '10%', width: '80%' }}>
@@ -231,7 +246,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
         id="tie-betting-area"
         className={`game-element rounded-xl border-4 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
           clickedBet === 'tie' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
-          winningBetArea === 'tie' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          winningBetArea === 'tie' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105 border-winning' : 
           'border-blue-400'
         }`}
         style={{ bottom: '38%', left: '10%', width: '80%', height: '16%' }}
@@ -254,7 +269,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
         id="dragon-betting-area"
         className={`game-element rounded-xl border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
           clickedBet === 'dragon' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
-          winningBetArea === 'dragon' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          winningBetArea === 'dragon' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105 border-winning' : 
           'border-black'
         }`}
         style={{ bottom: '13%', left: '9%', width: '39%', height: '24%' }}
@@ -278,7 +293,7 @@ export default function BettingAreaWithBets({ timer, selectedChip }: BettingArea
         id="tiger-betting-area"
         className={`game-element rounded-xl border-2 bg-gradient-to-br from-red-900 to-yellow-700 shadow-lg cursor-pointer select-none flex items-center justify-center transition-all duration-300 ${
           clickedBet === 'tiger' ? 'border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 
-          winningBetArea === 'tiger' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105' : 
+          winningBetArea === 'tiger' ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-105 border-winning' : 
           'border-black'
         }`}
         style={{ bottom: '13%', right: '9%', width: '39%', height: '24%', zIndex: 10 }}
