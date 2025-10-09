@@ -1,5 +1,4 @@
 import { useState } from "react";
-import casinoTable from "@/assets/image.png";
 import BettingAreaWithBets from "./BettingAreaWithBets";
 import BottomBar from "./BottomBar";
 import { useGameManagerContext } from "@/contexts/GameManagerContext";
@@ -19,10 +18,7 @@ export default function DragonTigerGame() {
             position: relative;
             width: 100%;
             height: 100%;
-            background-image: url(${casinoTable});
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
+            background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 30%, #0f3460 70%, #533483 100%);
             overflow: hidden;
           }
         `}
