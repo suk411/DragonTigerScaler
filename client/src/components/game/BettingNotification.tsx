@@ -13,7 +13,7 @@ export default function BettingNotification({ message, show }: BettingNotificati
     if (show) {
       setIsVisible(true);
       
-      // Hide after 1000ms
+      // Hide after exactly 1000ms to match animation
       const hideTimer = setTimeout(() => {
         setIsVisible(false);
       }, 1000);
@@ -21,6 +21,8 @@ export default function BettingNotification({ message, show }: BettingNotificati
       return () => {
         clearTimeout(hideTimer);
       };
+    } else {
+      setIsVisible(false);
     }
   }, [show, message]);
 

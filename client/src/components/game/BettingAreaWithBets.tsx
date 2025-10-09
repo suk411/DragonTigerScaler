@@ -360,7 +360,7 @@ export default function BettingAreaWithBets({
 
       <div
         className="absolute "
-        style={{ top: "30%",right: "19%", height: "10%", width: "50%" }}
+        style={{ top: "32%",right: "19%", height: "10%", width: "50%" }}
       >
         <TrendSection />
       </div>
