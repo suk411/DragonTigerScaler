@@ -4,10 +4,10 @@ import { GameManagerProvider } from "@/contexts/GameManagerContext";
 
 export default function Home() {
   return (
-    <GameManagerProvider>
-      <ResponsiveGameContainer aspectRatio={16 / 9} baseWidth={1600} baseHeight={900}>
+    <ResponsiveGameContainer aspectRatio={16 / 9} baseWidth={1600} baseHeight={900}>
+      <GameManagerProvider>
         <DragonTigerGame />
-      </ResponsiveGameContainer>
-    </GameManagerProvider>
+      </GameManagerProvider>
+    </ResponsiveGameContainer>
   );
 }

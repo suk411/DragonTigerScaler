@@ -95,7 +95,7 @@ export default function BettingAreaWithBets({
     if (currentPhase === "revealing" && timeRemaining === 5) {
       updateBalance();
     }
-  }, [currentPhase, timeRemaining]);
+  }, [currentPhase, timeRemaining, updateBalance]);
 
   // Clear bets and reset at the end of revealing phase
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function BettingAreaWithBets({
       clearBets();
       setWinningBetArea(null);
     }
-  }, [currentPhase, timeRemaining]);
+  }, [currentPhase, timeRemaining, clearBets]);
 
   const handleBetClick = async (betType: BetType) => {
     if (currentPhase !== "betting") {

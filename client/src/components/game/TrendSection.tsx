@@ -6,12 +6,15 @@ import { useGameManagerContext } from "@/contexts/GameManagerContext";
 export default function TrendSection() {
   const { roundHistory } = useGameManagerContext();
   
-  // Convert winner names to display letters
+  // Convert winner names to display letters (newest will be on the right)
   const trends = roundHistory.map(winner => {
     if (winner === 'tiger') return 'T';
     if (winner === 'dragon') return 'D';
     return 'Tie';
   });
+  
+  // Fill empty slots if less than 10 results
+  const displayTrends = [...Array(10)].map((_, index) => trends[index] || '');
 
   return (
     <>
@@ -55,7 +58,7 @@ export default function TrendSection() {
              background: 'rgba(0, 0, 0, 0.5)',
              boxShadow: '0 4px 10px rgba(147, 51, 234, 0.4)'
            }}>
-        {trends.map((v, i) => (
+        {displayTrends.map((v, i) => (
           <div
             key={i}
             className={
@@ -64,10 +67,12 @@ export default function TrendSection() {
                 ? "bg-gradient-to-br from-red-600 to-orange-500 text-white border-red-400"
                 : v === "D"
                 ? "bg-gradient-to-br from-blue-600 to-indigo-500 text-white border-blue-400"
-                : "bg-gradient-to-br from-green-600 to-teal-500 text-white border-green-400")
+                : v === "Tie"
+                ? "bg-gradient-to-br from-green-600 to-teal-500 text-white border-green-400"
+                : "bg-gray-700 bg-opacity-50 border-gray-600 text-gray-500")
             }
             style={{
-              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)'
+              boxShadow: v ? '0 2px 6px rgba(0, 0, 0, 0.3)' : 'none'
             }}
           >
             {v}

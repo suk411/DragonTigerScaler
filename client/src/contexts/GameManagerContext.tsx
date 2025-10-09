@@ -79,10 +79,14 @@ export function GameManagerProvider({ children }: { children: React.ReactNode })
       
       setCurrentRound(newRound);
       
-      // Add to history (keep last 10)
+      // Add to history (keep last 10, newest on right)
       setRoundHistory(prev => {
         const updated = [...prev, winner];
-        return updated.slice(-10);
+        // Keep only the last 10 results
+        if (updated.length > 10) {
+          return updated.slice(-10);
+        }
+        return updated;
       });
     };
 
