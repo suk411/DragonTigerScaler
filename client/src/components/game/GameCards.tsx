@@ -98,16 +98,16 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
         .card-front {
           transform: rotateY(180deg);
         }
-        .winner {
+        .card.flipped.winner {
           animation: glowZoom 0.8s ease-in-out infinite;
         }
         @keyframes glowZoom {
           0%, 100% { 
-            transform: scale(1) rotateY(180deg); 
+            transform: scale(1); 
             filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
           }
           50% { 
-            transform: scale(1.1) rotateY(180deg); 
+            transform: scale(1.1); 
             filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.8));
           }
         }

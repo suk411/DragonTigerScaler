@@ -347,14 +347,14 @@ export default function BettingAreaWithBets({
 
       <div
         id="tie-betting-area"
-        className={`game-element rounded- border-2 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
+        className={`game-element rounded- border-2 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center transition-all duration-300 ${
           clickedBet === "tie"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tie"
               ? "border-winning"
               : "border-black"
         }`}
-        style={{ bottom: "25%", left: "43%", width: "14%", height: "28%" }}
+        style={{ bottom: "25%", left: "43%", width: "14%", height: "28%", zIndex: 15 }}
         onClick={() => handleBetClick("tie")}
         data-testid="bet-tie"
       >
@@ -377,14 +377,14 @@ export default function BettingAreaWithBets({
 
       <div
         id="dragon-betting-area"
-        className={`game-element rounded-l-lg border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
+        className={`game-element rounded-l-lg border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center transition-all duration-300 ${
           clickedBet === "dragon"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "dragon"
               ? "border-winning"
               : "border-black"
         }`}
-        style={{ bottom: "25%", left: "23%", width: "20%", height: "28%" }}
+        style={{ bottom: "25%", left: "23%", width: "20%", height: "28%", zIndex: 15 }}
         onClick={() => handleBetClick("dragon")}
         data-testid="bet-dragon"
       >
@@ -420,7 +420,7 @@ export default function BettingAreaWithBets({
           right: "23%",
           width: "20%",
           height: "28%",
-          zIndex: 10,
+          zIndex: 15,
         }}
         onClick={() => handleBetClick("tiger")}
         data-testid="bet-tiger"
