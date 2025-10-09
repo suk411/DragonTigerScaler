@@ -5,6 +5,8 @@ import CountdownTimer from "./CountdownTimer";
 import TrendSection from "./TrendSection";
 import BettingNotification from "./BettingNotification";
 import StarTrendAnimation from "./StarTrendAnimation";
+import WinnersSection from "./WinnersSection";
+import LuckySection from "./LuckySection";
 import { useState, useEffect } from "react";
 import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import CoinAnimation from "./CoinAnimation";
@@ -363,6 +365,44 @@ export default function BettingAreaWithBets({
         style={{ top: "32%",right: "19%", height: "10%", width: "50%" }}
       >
         <TrendSection />
+      </div>
+
+      {/* Winners Section - Left Side */}
+      <div
+        className="absolute"
+        style={{ 
+          top: "23%", 
+          left: "2%", 
+          width: "17%", 
+          height: "40.8%"
+        }}
+      >
+        <WinnersSection 
+          winners={[
+            { id: '1', avatar: '/placeholder-avatar-1.png', username: 'P188095', amount: 1005377 },
+            { id: '2', avatar: '/placeholder-avatar-2.png', username: 'G260679', amount: 877480 },
+            { id: '3', avatar: '/placeholder-avatar-3.png', username: 'Zoe', amount: 88237 }
+          ]}
+        />
+      </div>
+
+      {/* Lucky Section - Right Side */}
+      <div
+        className="absolute"
+        style={{ 
+          top: "23%", 
+          right: "2%", 
+          width: "17%", 
+          height: "40.8%"
+        }}
+      >
+        <LuckySection 
+          luckyPlayers={[
+            { id: '1', avatar: '/placeholder-avatar-4.png', username: 'Lucky1', amount: 500000 },
+            { id: '2', avatar: '/placeholder-avatar-5.png', username: 'Lucky2', amount: 350000 },
+            { id: '3', avatar: '/placeholder-avatar-6.png', username: 'Lucky3', amount: 125000 }
+          ]}
+        />
       </div>
 
       <div
