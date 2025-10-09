@@ -14,14 +14,15 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
     // Calculate target position from trend-latest element
     const trendElement = document.getElementById('trend-latest');
     if (trendElement) {
-      const rect = trendElement.getBoundingClientRect();
-      const startRect = document.getElementById(`${startBetType}-betting-area`)?.getBoundingClientRect();
-      if (startRect) {
-        setTargetPosition({
-          x: rect.left + rect.width / 2 - startRect.left - startRect.width / 2,
-          y: rect.top + rect.height / 2 - startRect.top - startRect.height / 2
-        });
-      }
+      const trendRect = trendElement.getBoundingClientRect();
+      const viewportCenterX = window.innerWidth / 2;
+      const viewportCenterY = window.innerHeight / 2;
+      
+      // Calculate absolute position relative to viewport center
+      setTargetPosition({
+        x: trendRect.left + trendRect.width / 2 - viewportCenterX,
+        y: trendRect.top + trendRect.height / 2 - viewportCenterY
+      });
     }
 
     const timer = setTimeout(() => {
@@ -72,9 +73,11 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
         }
       `}</style>
       <div
-        className="absolute star-trend-particle z-50"
+        className="fixed star-trend-particle z-50"
         style={{
-          ...startPos,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           pointerEvents: "none",
         }}
       >
