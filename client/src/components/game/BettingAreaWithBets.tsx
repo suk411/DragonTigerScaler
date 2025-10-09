@@ -250,57 +250,14 @@ export default function BettingAreaWithBets({
             left: 22%;
             width: 56%;
             height: 30%;
-            border: 4px solid #8B4513;
+            border: 3px solid rgba(147, 51, 234, 0.6);
             border-radius: 12px;
-            background: linear-gradient(135deg, #654321 0%, #8B4513 50%, #654321 100%);
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.3), rgba(59, 130, 246, 0.2));
             box-shadow: 
-              inset 0 2px 4px rgba(0,0,0,0.3),
-              0 4px 8px rgba(0,0,0,0.5);
+              inset 0 2px 8px rgba(147, 51, 234, 0.4),
+              0 4px 20px rgba(147, 51, 234, 0.5);
             pointer-events: none;
             z-index: 5;
-          }
-
-          /* Decorative chips border */
-          .chips-border {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            background: linear-gradient(to bottom, #8B4513, #654321);
-            padding: 4px 20px;
-            border-radius: 20px;
-            border: 3px solid #8B4513;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-          }
-
-          .chip-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 2px solid #FFD700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-          }
-
-          .chip-dragon {
-            background: linear-gradient(135deg, #4169E1, #1E90FF);
-            color: white;
-          }
-
-          .chip-tie {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #654321;
-          }
-
-          .chip-tiger {
-            background: linear-gradient(135deg, #DC143C, #FF6347);
-            color: white;
           }
         `}
       </style>
@@ -382,22 +339,8 @@ export default function BettingAreaWithBets({
         />
       </div>
 
-      {/* Decorative Border with Chips */}
-      <div className="betting-border-container">
-        <div className="chips-border">
-          <div className="chip-icon chip-dragon">D</div>
-          <div className="chip-icon chip-tiger">T</div>
-          <div className="chip-icon chip-tie">$</div>
-          <div className="chip-icon chip-dragon">D</div>
-          <div className="chip-icon chip-tiger">T</div>
-          <div className="chip-icon chip-tie">$</div>
-          <div className="chip-icon chip-dragon">D</div>
-          <div className="chip-icon chip-tiger">T</div>
-          <div className="chip-icon chip-tie">$</div>
-          <div className="chip-icon chip-dragon">D</div>
-          <div className="chip-icon chip-tiger">T</div>
-        </div>
-      </div>
+      {/* Decorative Border */}
+      <div className="betting-border-container"></div>
 
       <div
         id="tie-betting-area"
