@@ -7,78 +7,59 @@ interface BettingNotificationProps {
 }
 
 export default function BettingNotification({ message, show }: BettingNotificationProps) {
-  const [animationState, setAnimationState] = useState<'enter' | 'pause' | 'exit' | 'hidden'>('hidden');
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (show) {
-      setAnimationState('enter');
+      setIsVisible(true);
       
-      // Pause in center after 500ms
-      const pauseTimer = setTimeout(() => {
-        setAnimationState('pause');
-      }, 500);
-
-      // Start exit animation after 1500ms total (500ms enter + 1000ms pause)
-      const exitTimer = setTimeout(() => {
-        setAnimationState('exit');
-      }, 1500);
-
-      // Hide completely after 2000ms total
+      // Hide after 1000ms
       const hideTimer = setTimeout(() => {
-        setAnimationState('hidden');
-      }, 2000);
+        setIsVisible(false);
+      }, 1000);
 
       return () => {
-        clearTimeout(pauseTimer);
-        clearTimeout(exitTimer);
         clearTimeout(hideTimer);
       };
     }
   }, [show, message]);
 
-  if (!show && animationState === 'hidden') return null;
-
-  const getTransform = () => {
-    switch (animationState) {
-      case 'enter':
-        return 'translateX(-150%)';
-      case 'pause':
-        return 'translateX(-50%)';
-      case 'exit':
-        return 'translateX(100%)';
-      default:
-        return 'translateX(-150%)';
-    }
-  };
+  if (!isVisible) return null;
 
   return (
     <div
-      className="fixed left-1/2 z-50"
+      className="fixed left-1/2 top-1/2 z-50 betting-notification-container"
       style={{
-        top: '50%',
-        transform: `translate(-50%, -50%)`,
+        transform: 'translate(-50%, -50%)',
         pointerEvents: 'none',
       }}
     >
-      <div
-        className="betting-notification"
-        style={{
-          transform: getTransform(),
-          transition: animationState === 'enter' ? 'transform 0.5s ease-out' : 
-                     animationState === 'exit' ? 'transform 0.5s ease-in' : 'none',
-        }}
-      >
-        <div className="notification-content">
-          <span className="notification-text">{message}</span>
-        </div>
+      <div className="notification-content">
+        <span className="notification-text">{message}</span>
       </div>
       
       <style>
         {`
-          .betting-notification {
-            position: relative;
-            width: max-content;
-            min-width: 400px;
+          @keyframes glowPulse {
+            0% {
+              opacity: 0;
+              transform: scale(0.8);
+              filter: blur(10px);
+            }
+            50% {
+              opacity: 1;
+              transform: scale(1.1);
+              filter: blur(0px);
+            }
+            100% {
+              opacity: 0;
+              transform: scale(0.8);
+              filter: blur(10px);
+            }
+          }
+
+          .betting-notification-container {
+            animation: glowPulse 1s ease-in-out;
           }
 
           .notification-content {
@@ -87,6 +68,8 @@ export default function BettingNotification({ message, show }: BettingNotificati
             border-radius: 20px;
             padding: 20px 60px;
             box-shadow: 
+              0 0 60px rgba(255, 215, 0, 0.9),
+              0 0 100px rgba(255, 165, 0, 0.7),
               0 10px 30px rgba(0, 0, 0, 0.5),
               inset 0 2px 10px rgba(255, 255, 255, 0.3),
               inset 0 -2px 10px rgba(0, 0, 0, 0.3);
@@ -103,8 +86,8 @@ export default function BettingNotification({ message, show }: BettingNotificati
             background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700);
             border-radius: 20px;
             z-index: -1;
-            opacity: 0.5;
-            filter: blur(8px);
+            opacity: 0.8;
+            filter: blur(15px);
           }
 
           .notification-text {
@@ -115,7 +98,8 @@ export default function BettingNotification({ message, show }: BettingNotificati
             text-shadow: 
               3px 3px 6px rgba(0, 0, 0, 0.8),
               -1px -1px 2px rgba(255, 255, 255, 0.3),
-              0 0 20px rgba(255, 215, 0, 0.5);
+              0 0 30px rgba(255, 215, 0, 0.8),
+              0 0 50px rgba(255, 165, 0, 0.6);
             white-space: nowrap;
             background: linear-gradient(180deg, #FFFFFF 0%, #FFE4B5 100%);
             -webkit-background-clip: text;
@@ -124,10 +108,6 @@ export default function BettingNotification({ message, show }: BettingNotificati
           }
 
           @media (max-width: 768px) {
-            .betting-notification {
-              min-width: 300px;
-            }
-            
             .notification-content {
               padding: 15px 40px;
             }

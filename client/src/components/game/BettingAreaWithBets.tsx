@@ -48,7 +48,7 @@ export default function BettingAreaWithBets({
     // Show "Start Betting" on mount
     setNotificationMessage("Start Betting");
     setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 2000);
+    setTimeout(() => setShowNotification(false), 1000);
 
     // Main game loop
     const gameLoop = setInterval(() => {
@@ -59,7 +59,7 @@ export default function BettingAreaWithBets({
             setCurrentPhase("revealing");
             setNotificationMessage("Stop Betting");
             setShowNotification(true);
-            setTimeout(() => setShowNotification(false), 2000);
+            setTimeout(() => setShowNotification(false), 1000);
             return 10;
           }
           return prev - 1;
@@ -70,7 +70,7 @@ export default function BettingAreaWithBets({
             setCurrentPhase("betting");
             setNotificationMessage("Start Betting");
             setShowNotification(true);
-            setTimeout(() => setShowNotification(false), 2000);
+            setTimeout(() => setShowNotification(false), 1000);
             setWinningBetArea(null);
             return 15;
           }
