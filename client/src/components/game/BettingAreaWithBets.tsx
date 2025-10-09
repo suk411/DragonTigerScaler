@@ -227,20 +227,23 @@ export default function BettingAreaWithBets({
             position: absolute;
           }
 
-          /* Progressive yellow border animation */
+          /* Progressive yellow border animation - inset to stay within borders */
           @keyframes progressiveYellowBorder {
             0% {
-              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
+              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9);
+              border-color: rgba(250, 204, 21, 0.5);
             }
             50% {
-              box-shadow: 0 0 0 10px rgba(250, 204, 21, 0.7);
+              box-shadow: inset 0 0 30px 8px rgba(250, 204, 21, 0.9);
+              border-color: rgba(250, 204, 21, 1);
             }
             100% {
-              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
+              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9);
+              border-color: rgba(250, 204, 21, 0.5);
             }
           }
           .border-winning {
-            animation: progressiveYellowBorder 2s infinite;
+            animation: progressiveYellowBorder 1.5s ease-in-out infinite;
           }
 
           /* Decorative border container */
@@ -344,11 +347,11 @@ export default function BettingAreaWithBets({
 
       <div
         id="tie-betting-area"
-        className={`game-element rounded- border-2  bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
+        className={`game-element rounded- border-2 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
           clickedBet === "tie"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tie"
-              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-100 border-winning"
+              ? "border-winning"
               : "border-black"
         }`}
         style={{ bottom: "25%", left: "43%", width: "14%", height: "28%" }}
@@ -378,7 +381,7 @@ export default function BettingAreaWithBets({
           clickedBet === "dragon"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "dragon"
-              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-100 border-winning"
+              ? "border-winning"
               : "border-black"
         }`}
         style={{ bottom: "25%", left: "23%", width: "20%", height: "28%" }}
@@ -409,7 +412,7 @@ export default function BettingAreaWithBets({
           clickedBet === "tiger"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tiger"
-              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-99 border-winning"
+              ? "border-winning"
               : "border-black"
         }`}
         style={{
