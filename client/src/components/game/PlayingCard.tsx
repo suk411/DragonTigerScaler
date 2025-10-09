@@ -38,7 +38,7 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
       {flipped ? (
         <>
           {/* Card Front */}
-          <rect width="126" height="164" rx="16" fill="white" stroke="#d1d5db" strokeWidth="1" />
+          <rect width="126" height="164" rx="16" fill="white" stroke="#d1d5db" strokeWidth="2" />
 
           {/* Top-left corner (larger rank & suit) */}
           <text x="12" y="32" fontSize="30" fontWeight="bold" fill={color}>
@@ -56,7 +56,7 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
       ) : (
         <>
           {/* Card Back */}
-          <rect width="126" height="164" rx="16" fill="url(#checkerboard)" stroke="white" strokeWidth="1" />
+          <rect width="126" height="164" rx="16" fill="url(#checkerboard)" stroke="white" strokeWidth="6" />
           <defs>
             <pattern id="checkerboard" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
               <rect width="6" height="6" fill="#dc2626" />
