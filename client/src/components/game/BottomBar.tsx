@@ -9,9 +9,9 @@ interface BottomBarProps {
 
 export default function BottomBar({ selectedChip, setSelectedChip, balance }: BottomBarProps) {
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-30 flex flex-col items-center" style={{ width: '100%' }}>
+    <div className="absolute bottom-0  z-30 flex flex-col items-center" style={{ width: '70%',  right: "12%"}}>
       <div
-        className="w-full max-w-full border-yellow-600 border-t-2 rounded-t-sm flex flex-col items-center justify-start"
+        className="w-full max-w-full border-yellow-600 border-2 rounded-t-full flex flex-col items-center justify-start"
         style={{
           backgroundImage: `
             repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 20px),

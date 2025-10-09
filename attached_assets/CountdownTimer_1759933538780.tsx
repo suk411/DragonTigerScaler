@@ -36,9 +36,9 @@ export default function CountdownTimer({ initial, onEnd, onPhaseChange }: Countd
   }, [time, isFifteen, onEnd]);
 
   return (
-    <div className="flex  items-center justify-center select-none">
+    <div className="flex   items-center justify-center select-none">
       <div
-        className="relative flex items-center justify-center"
+        className="relative items-center justify-center"
         style={{ width: 65, height: 48 }}
       >
         
