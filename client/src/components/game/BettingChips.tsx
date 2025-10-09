@@ -22,13 +22,13 @@ export default function BettingChips({
   ];
 
   return (
-    <div className="flex gap-5 justify-center flex-wrap mb-2 w-full">
+    <div className="flex gap-5  justify-center flex-wrap mb-2 w-full">
       {chips.map((chip) => (
         <img
           key={chip.id}
           src={chip.src}
           alt={chip.alt}
-          className={`w-9 h-9 object-contain rounded-full transition duration-200 ease-in-out ${
+          className={`w-9 h-9   object-contain rounded-full transition duration-200 ease-in-out ${
             selectedChip === chip.id
               ? "border-2 border-yellow-400 shadow-[0_0_10px_2px_rgba(255,255,0,0.7)]"
               : ""

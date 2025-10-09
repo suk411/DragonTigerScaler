@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import clockIcon from "../assets/clock-icon.png";
+
 
 interface CountdownTimerProps {
   initial: number;
@@ -41,11 +41,7 @@ export default function CountdownTimer({ initial, onEnd, onPhaseChange }: Countd
         className="relative flex items-center justify-center"
         style={{ width: 65, height: 48 }}
       >
-        <img
-          src={clockIcon}
-          alt="Clock"
-          style={{ width: 70, height: 48 }}
-        />
+        
         <span
           className="absolute pl-[2px] pb-[2px] inset-0 flex items-end justify-center font-bold text-lg text-[#443001]"
         >
