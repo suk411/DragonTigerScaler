@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 
@@ -8,21 +9,25 @@ interface StarTrendAnimationProps {
 
 export default function StarTrendAnimation({ startBetType, onComplete }: StarTrendAnimationProps) {
   const [isAnimating, setIsAnimating] = useState(true);
-  const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 });
+  const [positions, setPositions] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
 
   useEffect(() => {
-    // Calculate target position from trend-latest element
+    // Get the betting area element
+    const bettingArea = document.getElementById(`${startBetType}-betting-area`);
+    // Get the trend latest element
     const trendElement = document.getElementById('trend-latest');
-    if (trendElement) {
+    
+    if (bettingArea && trendElement) {
+      const bettingRect = bettingArea.getBoundingClientRect();
       const trendRect = trendElement.getBoundingClientRect();
-      const viewportCenterX = window.innerWidth / 2;
-      const viewportCenterY = window.innerHeight / 2;
       
-      // Calculate absolute position relative to viewport center
-      setTargetPosition({
-        x: trendRect.left + trendRect.width / 2 - viewportCenterX,
-        y: trendRect.top + trendRect.height / 2 - viewportCenterY
-      });
+      // Calculate center positions
+      const startX = bettingRect.left + bettingRect.width / 2;
+      const startY = bettingRect.top + bettingRect.height / 2;
+      const endX = trendRect.left + trendRect.width / 2;
+      const endY = trendRect.top + trendRect.height / 2;
+      
+      setPositions({ startX, startY, endX, endY });
     }
 
     const timer = setTimeout(() => {
@@ -32,22 +37,6 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
 
     return () => clearTimeout(timer);
   }, [onComplete, startBetType]);
-
-  // Get starting position based on bet type
-  const getStartPosition = () => {
-    switch (startBetType) {
-      case "dragon":
-        return { bottom: "39%", left: "33%" }; // Dragon betting area center
-      case "tiger":
-        return { bottom: "39%", right: "33%" }; // Tiger betting area center
-      case "tie":
-        return { bottom: "39%", left: "50%", transform: "translateX(-50%)" }; // Tie betting area center
-      default:
-        return { bottom: "39%", left: "50%" };
-    }
-  };
-
-  const startPos = getStartPosition();
 
   if (!isAnimating) return null;
 
@@ -61,11 +50,11 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
           }
           50% {
             opacity: 1;
-            transform: translate(${targetPosition.x * 0.5}px, ${targetPosition.y * 0.5}px) scale(1.5) rotate(180deg);
+            transform: translate(${(positions.endX - positions.startX) * 0.5}px, ${(positions.endY - positions.startY) * 0.5}px) scale(1.5) rotate(180deg);
           }
           100% {
             opacity: 0;
-            transform: translate(${targetPosition.x}px, ${targetPosition.y}px) scale(0.5) rotate(360deg);
+            transform: translate(${positions.endX - positions.startX}px, ${positions.endY - positions.startY}px) scale(0.5) rotate(360deg);
           }
         }
         .star-trend-particle {
@@ -75,8 +64,8 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
       <div
         className="fixed star-trend-particle z-50"
         style={{
-          top: '50%',
-          left: '50%',
+          top: `${positions.startY}px`,
+          left: `${positions.startX}px`,
           transform: 'translate(-50%, -50%)',
           pointerEvents: "none",
         }}
