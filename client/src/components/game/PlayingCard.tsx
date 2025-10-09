@@ -35,7 +35,21 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
   const displayRank = getRankDisplay();
 
   return (
-    <svg width="63" height="91" viewBox="0 0 63 91" className={`rounded-lg ${winner ? 'winner-card' : ''}`}>
+    <>
+      <style>{`
+        @keyframes cardGlow {
+          0%, 100% { 
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+          }
+          50% { 
+            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.8));
+          }
+        }
+        .winner-card {
+          animation: cardGlow 0.8s ease-in-out infinite;
+        }
+      `}</style>
+      <svg width="63" height="91" viewBox="0 0 63 91" className={`rounded-lg ${winner ? 'winner-card' : ''}`}>
       {flipped ? (
         <>
           {/* Card Front */}

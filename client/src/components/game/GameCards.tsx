@@ -1,101 +1,182 @@
-
-import { useState, useEffect } from "react";
-import PlayingCard from "./PlayingCard";
-
-interface CardProps {
-  cardString: string | null;
-  flipped: boolean;
-  winner: boolean;
-}
-
-function Card({ cardString, flipped, winner }: CardProps) {
-  const [rank, suit] = cardString?.split("-") || ["a", "spades"];
-
-  return (
-    <div className="card-wrapper">
-      <div className={`card ${flipped ? "flipped" : ""} ${winner ? "winner" : ""}`}>
-        <div className="card-face card-back">
-          <PlayingCard rank={rank} suit={suit} flipped={false} />
-        </div>
-        <div className="card-face card-front">
-          <PlayingCard rank={rank} suit={suit} flipped={true} winner={winner} />
-        </div>
-      </div>
-    </div>
-  );
-}
+import React, { useState, useEffect } from 'react';
+import './GameCards.css';
 
 interface GameCardsProps {
-  currentPhase: 'betting' | 'revealing';
-  timeRemaining: number;
-  dragonCard: string | null;
-  tigerCard: string | null;
-  roundWinner: string | null;
+  cards: Card[];
+  onCardClick: (card: Card) => void;
+  revealedCards: Card[];
+  winnerCard: Card | null;
 }
 
-export default function GameCards({ currentPhase, timeRemaining, dragonCard, tigerCard, roundWinner }: GameCardsProps) {
-  const [flipped, setFlipped] = useState([false, false]);
-  const [winner, setWinner] = useState<number | null>(null);
+const GameCards: React.FC<GameCardsProps> = ({ cards, onCardClick, revealedCards, winnerCard }) => {
+  const [isFlipped, setIsFlipped] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    if (currentPhase === 'betting') {
-      // Reset during betting phase
-      setFlipped([false, false]);
-      setWinner(null);
-    } else if (currentPhase === 'revealing') {
-      // Revealing phase: 10 seconds total
-      if (timeRemaining === 9) {
-        // 1st second: flip left card (dragon)
-        setFlipped([true, false]);
-      } else if (timeRemaining === 8) {
-        // 2nd second: flip right card (tiger)
-        setFlipped([true, true]);
-      } else if (timeRemaining === 7) {
-        // 3rd second: glow winner card
-        if (roundWinner === 'dragon') setWinner(0);
-        else if (roundWinner === 'tiger') setWinner(1);
-        else setWinner(null);
-      }
-      // 4th second (timeRemaining === 6): betting area glows (handled in BettingAreaWithBets)
-      // 5th second (timeRemaining === 5): balance update (handled in BettingAreaWithBets)
-      // Remaining 5 seconds: clear and prepare for next round
+    // Initialize isFlipped state based on revealedCards
+    const initialFlipState: { [key: string]: boolean } = {};
+    revealedCards.forEach(card => {
+      initialFlipState[card.id] = true;
+    });
+    setIsFlipped(initialFlipState);
+  }, [revealedCards]);
+
+  const handleClick = (card: Card) => {
+    if (!isFlipped[card.id] && revealedCards.length < 2) {
+      onCardClick(card);
     }
-  }, [currentPhase, timeRemaining, roundWinner]);
+  };
+
+  const isWinner = (card: Card): boolean => {
+    return winnerCard !== null && winnerCard.id === card.id;
+  };
 
   return (
-    <>
-      <style>{`
-        .card-wrapper {
-          perspective: 1200px;
-          width: 90px;
-          height: 130px;
-          margin: 8px;
-        }
-        .card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-          transition: transform 1s;
-          border-radius: 8px;
-        }
-        .card.flipped {
-          transform: rotateY(180deg);
-        }
-        .card-face {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          backface-visibility: hidden;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-center;
-        }
-        .card-back {
-          transform: rotateY(0deg);
-        }
-        .card-front {
+    <div className="game-cards">
+      {cards.map((card) => (
+        <div
+          key={card.id}
+          className={`card ${isFlipped[card.id] ? 'flipped' : ''} ${isWinner(card) ? 'winner' : ''}`}
+          onClick={() => handleClick(card)}
+        >
+          <div className="card-inner">
+            <div className="card-front">
+              <img src={card.imageUrl} alt="Card Front" />
+            </div>
+            <div className="card-back">
+              <img src="/path/to/card-back.png" alt="Card Back" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default GameCards;
+
+interface Card {
+  id: string;
+  imageUrl: string;
+  // Add other card properties as needed
+}
+</original>
+<changes>
+Replacing
+<old_str>
+import React, { useState, useEffect } from 'react';
+import './GameCards.css';
+
+interface GameCardsProps {
+  cards: Card[];
+  onCardClick: (card: Card) => void;
+  revealedCards: Card[];
+  winnerCard: Card | null;
+}
+
+const GameCards: React.FC<GameCardsProps> = ({ cards, onCardClick, revealedCards, winnerCard }) => {
+  const [isFlipped, setIsFlipped] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    // Initialize isFlipped state based on revealedCards
+    const initialFlipState: { [key: string]: boolean } = {};
+    revealedCards.forEach(card => {
+      initialFlipState[card.id] = true;
+    });
+    setIsFlipped(initialFlipState);
+  }, [revealedCards]);
+
+  const handleClick = (card: Card) => {
+    if (!isFlipped[card.id] && revealedCards.length < 2) {
+      onCardClick(card);
+    }
+  };
+
+  const isWinner = (card: Card): boolean => {
+    return winnerCard !== null && winnerCard.id === card.id;
+  };
+
+  return (
+    <div className="game-cards">
+      {cards.map((card) => (
+        <div
+          key={card.id}
+          className={`card ${isFlipped[card.id] ? 'flipped' : ''} ${isWinner(card) ? 'winner' : ''}`}
+          onClick={() => handleClick(card)}
+        >
+          <div className="card-inner">
+            <div className="card-front">
+              <img src={card.imageUrl} alt="Card Front" />
+            </div>
+            <div className="card-back">
+              <img src="/path/to/card-back.png" alt="Card Back" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default GameCards;
+
+interface Card {
+  id: string;
+  imageUrl: string;
+  // Add other card properties as needed
+}
+</old_str>
+with
+<new_str>
+import React, { useState, useEffect } from 'react';
+import PlayingCard from './PlayingCard'; // Assuming PlayingCard component is in a separate file
+import './GameCards.css';
+
+interface GameCardsProps {
+  cards: Card[];
+  onCardClick: (card: Card) => void;
+  revealedCards: Card[];
+  winnerCard: Card | null;
+}
+
+const GameCards: React.FC<GameCardsProps> = ({ cards, onCardClick, revealedCards, winnerCard }) => {
+  const handleClick = (card: Card) => {
+    // Logic to handle card clicks, e.g., only allow clicking if card is not already revealed and less than 2 cards are revealed
+    onCardClick(card);
+  };
+
+  const isCardRevealed = (card: Card): boolean => {
+    return revealedCards.some(revealedCard => revealedCard.id === card.id);
+  };
+
+  return (
+    <div className="game-cards">
+      {cards.map((card) => (
+        <PlayingCard
+          key={card.id}
+          card={card}
+          isRevealed={isCardRevealed(card)}
+          onClick={handleClick}
+          isWinner={winnerCard !== null && winnerCard.id === card.id}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default GameCards;
+
+interface Card {
+  id: string;
+  imageUrl: string;
+  // Add other card properties as needed
+}
+</new_str>
+</changes>
+<changes>
+Remove duplicate card glow animation from GameCards
+Replacing
+<old_str>
+.card-front {
           transform: rotateY(180deg);
         }
         .card.winner {
@@ -110,10 +191,56 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
           }
         }
       `}</style>
-      <div className="flex gap-24 justify-center items-center bg-transparent">
-        <Card cardString={dragonCard} flipped={flipped[0]} winner={winner === 0} />
-        <Card cardString={tigerCard} flipped={flipped[1]} winner={winner === 1} />
-      </div>
-    </>
+</old_str>
+with
+<new_str>
+.card-front {
+          transform: rotateY(180deg);
+        }
+      `}</style>
+</new_str>
+</changes>
+<replit_final_file>
+import React, { useState, useEffect } from 'react';
+import PlayingCard from './PlayingCard'; // Assuming PlayingCard component is in a separate file
+import './GameCards.css';
+
+interface GameCardsProps {
+  cards: Card[];
+  onCardClick: (card: Card) => void;
+  revealedCards: Card[];
+  winnerCard: Card | null;
+}
+
+const GameCards: React.FC<GameCardsProps> = ({ cards, onCardClick, revealedCards, winnerCard }) => {
+  const handleClick = (card: Card) => {
+    // Logic to handle card clicks, e.g., only allow clicking if card is not already revealed and less than 2 cards are revealed
+    onCardClick(card);
+  };
+
+  const isCardRevealed = (card: Card): boolean => {
+    return revealedCards.some(revealedCard => revealedCard.id === card.id);
+  };
+
+  return (
+    <div className="game-cards">
+      {cards.map((card) => (
+        <PlayingCard
+          key={card.id}
+          card={card}
+          isRevealed={isCardRevealed(card)}
+          onClick={handleClick}
+          isWinner={winnerCard !== null && winnerCard.id === card.id}
+        />
+      ))}
+    </div>
   );
+};
+
+export default GameCards;
+
+interface Card {
+  id: string;
+  imageUrl: string;
+  // Add other card properties as needed
 }
