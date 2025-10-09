@@ -182,6 +182,32 @@ export default function BettingAreaWithBets({
           .flame-particle:nth-child(1) { left: 12%; animation-delay: 0s; }
           .flame-particle:nth-child(2) { left: 45%; animation-delay: 1.3s; }
           .flame-particle:nth-child(3) { left: 77%; animation-delay: 2.6s; }
+          
+          .water-container {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 18%;
+            height: 15%;
+            transform: translateX(-50%);
+            pointer-events: none;
+            z-index: 16;
+            overflow: visible;
+          }
+          .water-particle {
+            position: absolute;
+            bottom: 16px;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, rgba(59,130,246,0.9) 40%, transparent 90%);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 4px #3b82f6);
+            animation: particleUp 4s linear infinite;
+          }
+          .water-particle:nth-child(1) { left: 12%; animation-delay: 0s; }
+          .water-particle:nth-child(2) { left: 45%; animation-delay: 1.3s; }
+          .water-particle:nth-child(3) { left: 77%; animation-delay: 2.6s; }
+          
           @keyframes particleUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-90px) scale(1.4); }
@@ -189,8 +215,8 @@ export default function BettingAreaWithBets({
           .creature-container {
             position: absolute;
             top: 0%;
-            width: 25%;
-            max-width: 180px;
+            width: 75%;
+            max-width: 540px;
             user-select: none;
             z-index: 20;
             display: flex;
@@ -235,18 +261,23 @@ export default function BettingAreaWithBets({
 
       <div
         className="creature-container animate-upDownImg"
-        style={{ top: "3%", left: "5%" }}
+        style={{ top: "1%", left: "2%" }}
       >
         <img
           src={dragonBody}
           alt="Dragon"
           style={{ width: "100%", height: "auto" }}
         />
+        <div className="water-container">
+          <div className="water-particle"></div>
+          <div className="water-particle"></div>
+          <div className="water-particle"></div>
+        </div>
       </div>
 
       <div
         className="creature-container animate-upDownImg"
-        style={{ top: "3.7%", right: "5%" }}
+        style={{ top: "1%", right: "2%" }}
       >
         <img
           src={tigerBody}
