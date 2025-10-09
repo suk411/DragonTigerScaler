@@ -35,7 +35,7 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
   const displayRank = getRankDisplay();
 
   return (
-    <svg width="63" height="91" viewBox="0 0 63 91" className="rounded-lg">
+    <svg width="63" height="91" viewBox="0 0 63 91" className={`rounded-lg ${winner ? 'winner-card' : ''}`}>
       {flipped ? (
         <>
           {/* Card Front */}

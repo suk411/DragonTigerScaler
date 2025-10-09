@@ -227,26 +227,20 @@ export default function BettingAreaWithBets({
             position: absolute;
           }
 
-          /* Progressive yellow border animation - inset to stay within borders */
+          /* Progressive yellow border animation */
           @keyframes progressiveYellowBorder {
             0% {
-              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9), 0 0 0 0 rgba(250, 204, 21, 0.5);
-              border-color: rgba(250, 204, 21, 0.5);
+              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
             }
             50% {
-              box-shadow: inset 0 0 30px 8px rgba(250, 204, 21, 0.9), 0 0 20px 4px rgba(250, 204, 21, 0.8);
-              border-color: rgba(250, 204, 21, 1);
+              box-shadow: 0 0 0 10px rgba(250, 204, 21, 0.7);
             }
             100% {
-              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9), 0 0 0 0 rgba(250, 204, 21, 0.5);
-              border-color: rgba(250, 204, 21, 0.5);
+              box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
             }
           }
           .border-winning {
-            animation: progressiveYellowBorder 1.5s ease-in-out infinite !important;
-            border-width: 3px !important;
-            position: relative;
-            z-index: 20 !important;
+            animation: progressiveYellowBorder 2s infinite;
           }
 
           /* Decorative border container */
@@ -350,14 +344,14 @@ export default function BettingAreaWithBets({
 
       <div
         id="tie-betting-area"
-        className={`game-element rounded- border-2 bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center transition-all duration-300 ${
+        className={`game-element rounded- border-2  bg-gradient-to-br from-emerald-900 to-teal-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
           clickedBet === "tie"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tie"
-              ? "border-winning"
+              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-100 border-winning"
               : "border-black"
         }`}
-        style={{ bottom: "25%", left: "43%", width: "14%", height: "28%", zIndex: 15 }}
+        style={{ bottom: "25%", left: "43%", width: "14%", height: "28%" }}
         onClick={() => handleBetClick("tie")}
         data-testid="bet-tie"
       >
@@ -380,14 +374,14 @@ export default function BettingAreaWithBets({
 
       <div
         id="dragon-betting-area"
-        className={`game-element rounded-l-lg border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center transition-all duration-300 ${
+        className={`game-element rounded-l-lg border-2 bg-gradient-to-br from-indigo-900 to-blue-700 shadow-lg cursor-pointer select-none flex items-center justify-center z-10 transition-all duration-300 ${
           clickedBet === "dragon"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "dragon"
-              ? "border-winning"
+              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-100 border-winning"
               : "border-black"
         }`}
-        style={{ bottom: "25%", left: "23%", width: "20%", height: "28%", zIndex: 15 }}
+        style={{ bottom: "25%", left: "23%", width: "20%", height: "28%" }}
         onClick={() => handleBetClick("dragon")}
         data-testid="bet-dragon"
       >
@@ -415,7 +409,7 @@ export default function BettingAreaWithBets({
           clickedBet === "tiger"
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tiger"
-              ? "border-winning"
+              ? "border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,1)] scale-99 border-winning"
               : "border-black"
         }`}
         style={{
@@ -423,7 +417,7 @@ export default function BettingAreaWithBets({
           right: "23%",
           width: "20%",
           height: "28%",
-          zIndex: 15,
+          zIndex: 10,
         }}
         onClick={() => handleBetClick("tiger")}
         data-testid="bet-tiger"
