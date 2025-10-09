@@ -230,20 +230,23 @@ export default function BettingAreaWithBets({
           /* Progressive yellow border animation - inset to stay within borders */
           @keyframes progressiveYellowBorder {
             0% {
-              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9);
+              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9), 0 0 0 0 rgba(250, 204, 21, 0.5);
               border-color: rgba(250, 204, 21, 0.5);
             }
             50% {
-              box-shadow: inset 0 0 30px 8px rgba(250, 204, 21, 0.9);
+              box-shadow: inset 0 0 30px 8px rgba(250, 204, 21, 0.9), 0 0 20px 4px rgba(250, 204, 21, 0.8);
               border-color: rgba(250, 204, 21, 1);
             }
             100% {
-              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9);
+              box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9), 0 0 0 0 rgba(250, 204, 21, 0.5);
               border-color: rgba(250, 204, 21, 0.5);
             }
           }
           .border-winning {
-            animation: progressiveYellowBorder 1.5s ease-in-out infinite;
+            animation: progressiveYellowBorder 1.5s ease-in-out infinite !important;
+            border-width: 3px !important;
+            position: relative;
+            z-index: 20 !important;
           }
 
           /* Decorative border container */
