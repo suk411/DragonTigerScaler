@@ -6,15 +6,18 @@ import { useGameManagerContext } from "@/contexts/GameManagerContext";
 export default function TrendSection() {
   const { roundHistory } = useGameManagerContext();
   
-  // Convert winner names to display letters (newest will be on the right)
+  // Convert winner names to display letters
   const trends = roundHistory.map(winner => {
     if (winner === 'tiger') return 'T';
     if (winner === 'dragon') return 'D';
     return 'Tie';
   });
   
-  // Fill empty slots if less than 10 results
-  const displayTrends = [...Array(10)].map((_, index) => trends[index] || '');
+  // Fill empty slots if less than 10 results - newest on right
+  const displayTrends = [...Array(10)].map((_, index) => {
+    const trendIndex = trends.length - 10 + index;
+    return trendIndex >= 0 ? trends[trendIndex] : '';
+  });
 
   return (
     <>
@@ -61,8 +64,9 @@ export default function TrendSection() {
         {displayTrends.map((v, i) => (
           <div
             key={i}
+            id={i === 9 ? 'trend-latest' : undefined}
             className={
-              "w-8 h-7 flex flex-wrap text-xs justify-center items-center font-bold select-none rounded border-2 " +
+              "w-8 h-7 flex flex-wrap text-xs justify-center items-center font-bold select-none rounded border-2 transition-all duration-500 " +
               (v === "T"
                 ? "bg-gradient-to-br from-red-600 to-orange-500 text-white border-red-400"
                 : v === "D"

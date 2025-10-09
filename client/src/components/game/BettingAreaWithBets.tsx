@@ -234,21 +234,26 @@ export default function BettingAreaWithBets({
             position: absolute;
           }
 
-          /* Progressive yellow border animation - contained within area */
-          @keyframes progressiveYellowBorder {
-            0% {
+          /* Fast blink animation - 2 blinks in 1 second */
+          @keyframes fastBlink {
+            0%, 100% {
               box-shadow: inset 0 0 0px 0px rgba(250, 204, 21, 0.9);
+            }
+            25% {
+              box-shadow: inset 0 0 40px 15px rgba(250, 204, 21, 1);
             }
             50% {
-              box-shadow: inset 0 0 30px 10px rgba(250, 204, 21, 0.9);
-            }
-            100% {
               box-shadow: inset 0 0 0px 0px rgba(250, 204, 21, 0.9);
+            }
+            75% {
+              box-shadow: inset 0 0 40px 15px rgba(250, 204, 21, 1);
             }
           }
           .border-winning {
-            animation: progressiveYellowBorder 2s infinite;
+            animation: fastBlink 1s ease-in-out;
             overflow: hidden;
+            position: relative;
+            z-index: 100 !important;
           }
           
           /* Blur effects for creatures */
@@ -380,9 +385,9 @@ export default function BettingAreaWithBets({
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tie"
               ? "border-yellow-400 scale-100 border-winning"
-              : "border-black"
+              : "border-emerald-600"
         }`}
-        style={{ bottom: "25%", left: "43%", width: "14%", height: "28%" }}
+        style={{ bottom: "23%", left: "43%", width: "15.4%", height: "30.8%" }}
         onClick={() => handleBetClick("tie")}
         data-testid="bet-tie"
       >
@@ -410,9 +415,9 @@ export default function BettingAreaWithBets({
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "dragon"
               ? "border-yellow-400 scale-100 border-winning"
-              : "border-black"
+              : "border-blue-600"
         }`}
-        style={{ bottom: "25%", left: "23%", width: "20%", height: "28%" }}
+        style={{ bottom: "23%", left: "21%", width: "22%", height: "30.8%" }}
         onClick={() => handleBetClick("dragon")}
         data-testid="bet-dragon"
       >
@@ -441,13 +446,13 @@ export default function BettingAreaWithBets({
             ? "border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.8)]"
             : winningBetArea === "tiger"
               ? "border-yellow-400 scale-99 border-winning"
-              : "border-black"
+              : "border-orange-600"
         }`}
         style={{
-          bottom: "25%",
-          right: "23%",
-          width: "20%",
-          height: "28%",
+          bottom: "23%",
+          right: "19.6%",
+          width: "22%",
+          height: "30.8%",
           zIndex: 10,
         }}
         onClick={() => handleBetClick("tiger")}

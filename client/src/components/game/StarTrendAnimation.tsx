@@ -8,15 +8,29 @@ interface StarTrendAnimationProps {
 
 export default function StarTrendAnimation({ startBetType, onComplete }: StarTrendAnimationProps) {
   const [isAnimating, setIsAnimating] = useState(true);
+  const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    // Calculate target position from trend-latest element
+    const trendElement = document.getElementById('trend-latest');
+    if (trendElement) {
+      const rect = trendElement.getBoundingClientRect();
+      const startRect = document.getElementById(`${startBetType}-betting-area`)?.getBoundingClientRect();
+      if (startRect) {
+        setTargetPosition({
+          x: rect.left + rect.width / 2 - startRect.left - startRect.width / 2,
+          y: rect.top + rect.height / 2 - startRect.top - startRect.height / 2
+        });
+      }
+    }
+
     const timer = setTimeout(() => {
       setIsAnimating(false);
       onComplete();
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [onComplete, startBetType]);
 
   // Get starting position based on bet type
   const getStartPosition = () => {
@@ -46,11 +60,11 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
           }
           50% {
             opacity: 1;
-            transform: translate(25vw, -20vh) scale(1.5) rotate(180deg);
+            transform: translate(${targetPosition.x * 0.5}px, ${targetPosition.y * 0.5}px) scale(1.5) rotate(180deg);
           }
           100% {
             opacity: 0;
-            transform: translate(40vw, -25vh) scale(0.5) rotate(360deg);
+            transform: translate(${targetPosition.x}px, ${targetPosition.y}px) scale(0.5) rotate(360deg);
           }
         }
         .star-trend-particle {

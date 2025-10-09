@@ -98,16 +98,22 @@ export default function GameCards({ currentPhase, timeRemaining, dragonCard, tig
         .card-front {
           transform: rotateY(180deg);
         }
-        .winner .card-face {
-          animation: glowZoom 0.6s ease-in-out 2;
+        .winner .card-front {
+          animation: cardGlow 0.6s ease-in-out 2;
         }
-        .winner-card {
-          filter: drop-shadow(0 0 18px 4px gold);
-        }
-        @keyframes glowZoom {
-          0% { transform: scale(1); filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); }
-          50% { transform: scale(1.09); filter: drop-shadow(0 0 18px 4px gold); }
-          100% { transform: scale(1); filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); }
+        @keyframes cardGlow {
+          0% { 
+            transform: rotateY(180deg) scale(1); 
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); 
+          }
+          50% { 
+            transform: rotateY(180deg) scale(1.09); 
+            filter: drop-shadow(0 0 18px 4px gold); 
+          }
+          100% { 
+            transform: rotateY(180deg) scale(1); 
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.13)); 
+          }
         }
       `}</style>
       <div className="flex gap-32 justify-center items-center bg-transparent">
