@@ -15,6 +15,7 @@ interface GameManagerContextType {
   currentRound: GameRound;
   updateBalance: () => void;
   clearBets: () => void;
+  roundHistory: string[];
 }
 
 const GameManagerContext = createContext<GameManagerContextType | null>(null);
@@ -32,6 +33,7 @@ export function GameManagerProvider({ children }: { children: React.ReactNode })
     tiger: 0,
     tie: 0,
   });
+  const [roundHistory, setRoundHistory] = useState<string[]>([]);
 
   // Generate new round every 25 seconds (15s betting + 10s revealing)
   useEffect(() => {
@@ -68,11 +70,19 @@ export function GameManagerProvider({ children }: { children: React.ReactNode })
         winner = 'tie';
       }
       
-      setCurrentRound({
+      const newRound = {
         id: Date.now(),
         dragon_card: dragonCard,
         tiger_card: tigerCard,
         winner: winner,
+      };
+      
+      setCurrentRound(newRound);
+      
+      // Add to history (keep last 10)
+      setRoundHistory(prev => {
+        const updated = [...prev, winner];
+        return updated.slice(-10);
       });
     };
 
@@ -118,6 +128,7 @@ export function GameManagerProvider({ children }: { children: React.ReactNode })
     currentRound,
     updateBalance,
     clearBets,
+    roundHistory,
   };
 
   return (

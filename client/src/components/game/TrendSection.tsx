@@ -1,9 +1,17 @@
 import { MdTrendingUp } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { MdOutlineFiberNew } from "react-icons/md";
+import { useGameManagerContext } from "@/contexts/GameManagerContext";
 
 export default function TrendSection() {
-  const trends = ["T", "T", "T", "D", "T", "D", "T", "D", "D", "Ti"];
+  const { roundHistory } = useGameManagerContext();
+  
+  // Convert winner names to display letters
+  const trends = roundHistory.map(winner => {
+    if (winner === 'tiger') return 'T';
+    if (winner === 'dragon') return 'D';
+    return 'Tie';
+  });
 
   return (
     <>
