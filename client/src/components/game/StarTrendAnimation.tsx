@@ -27,7 +27,7 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
     const timer = setTimeout(() => {
       setIsAnimating(false);
       onComplete();
-    }, 1500);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [onComplete, startBetType]);
@@ -68,7 +68,7 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
           }
         }
         .star-trend-particle {
-          animation: starToTrend 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: starToTrend 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
       `}</style>
       <div

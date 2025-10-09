@@ -53,7 +53,7 @@ export default function TrendSection() {
         <MdOutlineFiberNew size={18} />
       </div>
 
-      <div className="game-element p-2 flex items-center gap-2 border-purple-500 border-2 justify-center z-40 rounded-lg"
+      <div className="game-element py-2 flex items-center gap-2 border-purple-500 border-2 justify-center z-40 rounded-lg"
            style={{ 
              top: '30%', 
              right: '17.5%', 

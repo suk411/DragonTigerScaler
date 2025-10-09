@@ -252,8 +252,6 @@ export default function BettingAreaWithBets({
           .border-winning {
             animation: fastBlink 1s ease-in-out;
             overflow: hidden;
-            position: relative;
-            z-index: 100 !important;
           }
           
           /* Blur effects for creatures */
