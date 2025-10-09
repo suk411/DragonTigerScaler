@@ -310,7 +310,7 @@ export default function BettingAreaWithBets({
 
       <div
         className="absolute left-1/2"
-        style={{ top: "4%", transform: "translateX(-50%)" }}
+        style={{ top: "8%", transform: "translateX(-50%)" }}
       >
         <CountdownTimer
           initial={timer}
