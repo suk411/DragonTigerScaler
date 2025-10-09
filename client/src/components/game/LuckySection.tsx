@@ -44,29 +44,26 @@ export default function LuckySection({ luckyPlayers }: LuckySectionProps) {
           )}
           
           {/* Avatar with border only */}
-          {player.avatar ? (
+          {player.avatar && player.avatar.trim() !== '' ? (
             <img 
               src={player.avatar} 
               alt={`Lucky ${index + 1}`}
-              className="w-12 h-12 rounded-full border-2 border-yellow-400 object-cover"
+              className="w-12 h-12 rounded-full border-2 border-yellow-400 object-cover bg-gray-800"
               onError={(e) => {
-                // Fallback if image fails to load
+                // Replace with fallback on error
                 const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                if (target.nextElementSibling) {
-                  (target.nextElementSibling as HTMLElement).style.display = 'flex';
-                }
+                target.outerHTML = `
+                  <div class="w-12 h-12 rounded-full border-2 border-gray-600 bg-gray-800 flex items-center justify-center">
+                    <span class="text-gray-500 text-xs">👤</span>
+                  </div>
+                `;
               }}
             />
-          ) : null}
-          
-          {/* Fallback avatar placeholder */}
-          <div 
-            className="w-12 h-12 rounded-full border-2 border-gray-600 bg-gray-800 flex items-center justify-center"
-            style={{ display: player.avatar ? 'none' : 'flex' }}
-          >
-            <span className="text-gray-500 text-xs">👤</span>
-          </div>
+          ) : (
+            <div className="w-12 h-12 rounded-full border-2 border-gray-600 bg-gray-800 flex items-center justify-center">
+              <span className="text-gray-500 text-xs">👤</span>
+            </div>
+          )}
           
           {/* Balance below avatar */}
           <div className="text-green-400 text-xs font-bold">
