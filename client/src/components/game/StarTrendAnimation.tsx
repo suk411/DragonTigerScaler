@@ -9,7 +9,11 @@ interface StarTrendAnimationProps {
 
 export default function StarTrendAnimation({ startBetType, onComplete }: StarTrendAnimationProps) {
   const [isAnimating, setIsAnimating] = useState(true);
-  const [positions, setPositions] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
+  const [positions, setPositions] = useState({ 
+    startX: 0, startY: 0, 
+    startXPercent: 0, startYPercent: 0,
+    endXPercent: 0, endYPercent: 0 
+  });
 
   useEffect(() => {
     const setupAnimation = () => {
@@ -18,28 +22,36 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
       if (gameContainer) {
         const containerRect = gameContainer.getBoundingClientRect();
         
-        // Start positions based on bet type (using percentage from top-left of viewport)
-        let startX, startY;
+        // Start positions - use viewport coordinates for initial placement
+        let startX, startY, startXPercent, startYPercent;
         
         if (startBetType === 'tie') {
-          // Tie: top: 60%, right: 48% means left: 52%
-          startX = containerRect.left + (containerRect.width * 0.52);
-          startY = containerRect.top + (containerRect.height * 0.60);
+          startXPercent = 52; // 52% from left
+          startYPercent = 60; // 60% from top
         } else if (startBetType === 'dragon') {
-          // Dragon: top: 60%, right: 66% means left: 34%
-          startX = containerRect.left + (containerRect.width * 0.34);
-          startY = containerRect.top + (containerRect.height * 0.60);
-        } else if (startBetType === 'tiger') {
-          // Tiger: top: 60%, right: 30% means left: 70%
-          startX = containerRect.left + (containerRect.width * 0.70);
-          startY = containerRect.top + (containerRect.height * 0.60);
+          startXPercent = 34; // 34% from left
+          startYPercent = 60; // 60% from top
+        } else { // tiger
+          startXPercent = 70; // 70% from left
+          startYPercent = 60; // 60% from top
         }
         
-        // End position: top: 36%, right: 34% means left: 66%
-        const endX = containerRect.left + (containerRect.width * 0.66);
-        const endY = containerRect.top + (containerRect.height * 0.36);
+        // Calculate viewport start position
+        startX = containerRect.left + (containerRect.width * (startXPercent / 100));
+        startY = containerRect.top + (containerRect.height * (startYPercent / 100));
         
-        setPositions({ startX, startY, endX, endY });
+        // End position as percentage (canvas scalar) - trend display location
+        const endXPercent = 66; // 66% from left
+        const endYPercent = 36; // 36% from top
+        
+        setPositions({ 
+          startX, 
+          startY, 
+          startXPercent, 
+          startYPercent,
+          endXPercent, 
+          endYPercent 
+        });
       }
     };
 
@@ -48,7 +60,7 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
     const timer = setTimeout(() => {
       setIsAnimating(false);
       onComplete();
-    }, 3000);
+    }, 2500); // Reduced from 3000ms for smoother flow
 
     return () => clearTimeout(timer);
   }, [onComplete, startBetType]);
@@ -61,129 +73,161 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
   const starColorClass = startBetType === 'dragon' ? 'text-blue-400' : 
                          startBetType === 'tiger' ? 'text-orange-400' : 'text-green-400';
 
-  const deltaX = positions.endX - positions.startX;
-  const deltaY = positions.endY - positions.startY;
+  // Calculate percentage-based delta for canvas scalar positioning
+  const deltaXPercent = positions.endXPercent - positions.startXPercent;
+  const deltaYPercent = positions.endYPercent - positions.startYPercent;
 
   return (
     <>
       <style>{`
         @keyframes starToTrend {
           0% {
-            opacity: 1;
-            transform: translate(0, 0) scale(1.5) rotate(0deg);
+            opacity: 0;
+            left: ${positions.startXPercent}%;
+            top: ${positions.startYPercent}%;
+            transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
           }
-          20% {
+          15% {
             opacity: 1;
-            transform: translate(${deltaX * 0.2}px, ${deltaY * 0.2 - 20}px) scale(1.7) rotate(72deg);
+            left: calc(${positions.startXPercent}% + ${deltaXPercent * 0.15}%);
+            top: calc(${positions.startYPercent}% + ${deltaYPercent * 0.15}% - 3%);
+            transform: translate(-50%, -50%) scale(1.8) rotate(54deg);
           }
-          40% {
+          30% {
             opacity: 1;
-            transform: translate(${deltaX * 0.4}px, ${deltaY * 0.4 - 30}px) scale(1.9) rotate(144deg);
+            left: calc(${positions.startXPercent}% + ${deltaXPercent * 0.3}%);
+            top: calc(${positions.startYPercent}% + ${deltaYPercent * 0.3}% - 4%);
+            transform: translate(-50%, -50%) scale(2) rotate(108deg);
           }
-          60% {
+          50% {
             opacity: 1;
-            transform: translate(${deltaX * 0.6}px, ${deltaY * 0.6 - 20}px) scale(1.6) rotate(216deg);
+            left: calc(${positions.startXPercent}% + ${deltaXPercent * 0.5}%);
+            top: calc(${positions.startYPercent}% + ${deltaYPercent * 0.5}% - 3%);
+            transform: translate(-50%, -50%) scale(1.8) rotate(180deg);
           }
-          80% {
+          70% {
+            opacity: 1;
+            left: calc(${positions.startXPercent}% + ${deltaXPercent * 0.75}%);
+            top: calc(${positions.startYPercent}% + ${deltaYPercent * 0.75}% - 1%);
+            transform: translate(-50%, -50%) scale(1.4) rotate(252deg);
+          }
+          85% {
             opacity: 0.9;
-            transform: translate(${deltaX * 0.85}px, ${deltaY * 0.85}px) scale(1.2) rotate(288deg);
+            left: calc(${positions.startXPercent}% + ${deltaXPercent * 0.92}%);
+            top: calc(${positions.startYPercent}% + ${deltaYPercent * 0.92}%);
+            transform: translate(-50%, -50%) scale(1) rotate(306deg);
           }
           95% {
             opacity: 0.5;
-            transform: translate(${deltaX * 0.98}px, ${deltaY * 0.98}px) scale(0.8) rotate(342deg);
+            left: calc(${positions.startXPercent}% + ${deltaXPercent * 0.98}%);
+            top: calc(${positions.startYPercent}% + ${deltaYPercent * 0.98}%);
+            transform: translate(-50%, -50%) scale(0.6) rotate(342deg);
           }
           100% {
             opacity: 0;
-            transform: translate(${deltaX}px, ${deltaY}px) scale(0.5) rotate(360deg);
+            left: ${positions.endXPercent}%;
+            top: ${positions.endYPercent}%;
+            transform: translate(-50%, -50%) scale(0.3) rotate(360deg);
           }
         }
         
         @keyframes trailFade {
           0% {
-            opacity: 0.6;
-            transform: scale(1);
+            opacity: 0.7;
+            left: ${positions.startXPercent}%;
+            top: ${positions.startYPercent}%;
+            transform: translate(-50%, -50%) scale(1.2);
           }
           100% {
             opacity: 0;
-            transform: scale(0.3);
+            left: calc(${positions.startXPercent}% + ${deltaXPercent * 0.3}%);
+            top: calc(${positions.startYPercent}% + ${deltaYPercent * 0.3}%);
+            transform: translate(-50%, -50%) scale(0.4);
           }
         }
         
         .star-trend-particle {
-          animation: starToTrend 3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
-          will-change: transform, opacity;
+          animation: starToTrend 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+          will-change: left, top, transform, opacity;
         }
         
         .star-trail {
-          animation: trailFade 1.2s ease-out forwards;
-          will-change: transform, opacity;
+          animation: trailFade 1.5s ease-out forwards;
+          will-change: left, top, transform, opacity;
         }
       `}</style>
       
-      {/* Trail particles */}
+      {/* Trail particles with improved smoothness */}
       <div
-        className="fixed star-trail z-[100]"
+        className="absolute star-trail z-[100]"
         style={{
-          top: `${positions.startY}px`,
-          left: `${positions.startX}px`,
-          transform: 'translate(-50%, -50%)',
           pointerEvents: "none",
-          animationDelay: '0.08s'
+          animationDelay: '0.1s'
         }}
       >
         <Star 
-          className={`w-7 h-7 ${starColorClass}`}
+          className={`w-8 h-8 ${starColorClass}`}
           fill="currentColor"
           style={{
-            filter: `blur(3px) drop-shadow(0 0 18px ${starColor})`,
+            filter: `blur(2px) drop-shadow(0 0 15px ${starColor})`,
           }}
         />
       </div>
       
       <div
-        className="fixed star-trail z-[100]"
+        className="absolute star-trail z-[100]"
         style={{
-          top: `${positions.startY}px`,
-          left: `${positions.startX}px`,
-          transform: 'translate(-50%, -50%)',
           pointerEvents: "none",
-          animationDelay: '0.15s'
+          animationDelay: '0.2s'
         }}
       >
         <Star 
-          className={`w-7 h-7 ${starColorClass}`}
+          className={`w-8 h-8 ${starColorClass}`}
           fill="currentColor"
           style={{
-            filter: `blur(4px) drop-shadow(0 0 22px ${starColor})`,
+            filter: `blur(3px) drop-shadow(0 0 20px ${starColor})`,
+          }}
+        />
+      </div>
+      
+      <div
+        className="absolute star-trail z-[100]"
+        style={{
+          pointerEvents: "none",
+          animationDelay: '0.3s'
+        }}
+      >
+        <Star 
+          className={`w-9 h-9 ${starColorClass}`}
+          fill="currentColor"
+          style={{
+            filter: `blur(4px) drop-shadow(0 0 25px ${starColor})`,
           }}
         />
       </div>
       
       {/* Main star */}
       <div
-        className="fixed star-trend-particle z-[100]"
+        className="absolute star-trend-particle z-[100]"
         style={{
-          top: `${positions.startY}px`,
-          left: `${positions.startX}px`,
-          transform: 'translate(-50%, -50%)',
           pointerEvents: "none",
         }}
         data-testid={`star-animation-${startBetType}`}
       >
         <div className="relative">
           <Star 
-            className={`w-10 h-10 ${starColorClass}`}
+            className={`w-12 h-12 ${starColorClass}`}
             fill="currentColor"
             style={{
-              filter: `drop-shadow(0 0 15px ${starColor}) drop-shadow(0 0 25px ${starColor})`,
+              filter: `drop-shadow(0 0 20px ${starColor}) drop-shadow(0 0 30px ${starColor})`,
             }}
           />
           {/* Glow ring */}
           <div 
             className="absolute inset-0 rounded-full"
             style={{
-              background: `radial-gradient(circle, ${starColor}50 0%, transparent 70%)`,
-              transform: 'scale(2)',
+              background: `radial-gradient(circle, ${starColor}70 0%, ${starColor}30 40%, transparent 70%)`,
+              transform: 'scale(2.5)',
             }}
           />
         </div>
