@@ -43,6 +43,7 @@ export default function BettingAreaWithBets({
     currentRound,
     updateBalance,
     clearBets,
+    addToHistory,
   } = useGameManagerContext();
   const { toast } = useToast();
 
@@ -297,6 +298,10 @@ export default function BettingAreaWithBets({
           onComplete={() => {
             setShowStarAnimation(false);
             setStarAnimationBetType(null);
+            // Add winner to history when star animation completes (at 21s)
+            if (currentRound.winner) {
+              addToHistory(currentRound.winner);
+            }
           }}
         />
       )}

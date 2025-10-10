@@ -16,6 +16,7 @@ interface GameManagerContextType {
   updateBalance: () => void;
   clearBets: () => void;
   roundHistory: string[];
+  addToHistory: (winner: string) => void;
 }
 
 const GameManagerContext = createContext<GameManagerContextType | null>(null);
@@ -78,16 +79,6 @@ export function GameManagerProvider({ children }: { children: React.ReactNode })
       };
       
       setCurrentRound(newRound);
-      
-      // Add to history (keep last 10, newest on right)
-      setRoundHistory(prev => {
-        const updated = [...prev, winner];
-        // Keep only the last 10 results
-        if (updated.length > 10) {
-          return updated.slice(-10);
-        }
-        return updated;
-      });
     };
 
     generateRound();
@@ -125,6 +116,17 @@ export function GameManagerProvider({ children }: { children: React.ReactNode })
     setBets({ dragon: 0, tiger: 0, tie: 0 });
   };
 
+  const addToHistory = (winner: string) => {
+    setRoundHistory(prev => {
+      const updated = [...prev, winner];
+      // Keep only the last 10 results
+      if (updated.length > 10) {
+        return updated.slice(-10);
+      }
+      return updated;
+    });
+  };
+
   const gameManager = {
     balance,
     placeBet,
@@ -133,6 +135,7 @@ export function GameManagerProvider({ children }: { children: React.ReactNode })
     updateBalance,
     clearBets,
     roundHistory,
+    addToHistory,
   };
 
   return (
