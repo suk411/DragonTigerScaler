@@ -13,30 +13,30 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
 
   useEffect(() => {
     const setupAnimation = () => {
-      const gameContainer = document.querySelector('.relative.w-full.h-full');
+      const gameContainer = document.querySelector('.relative.w-full.h-full') as HTMLElement;
       
       if (gameContainer) {
         const containerRect = gameContainer.getBoundingClientRect();
         
-        // Start positions based on bet type (relative to game container)
+        // Start positions based on bet type (using percentage from top-left of viewport)
         let startX, startY;
         
         if (startBetType === 'tie') {
-          // Tie: top: 60%, right: 48%
-          startX = containerRect.right - (containerRect.width * 0.48);
+          // Tie: top: 60%, right: 48% means left: 52%
+          startX = containerRect.left + (containerRect.width * 0.52);
           startY = containerRect.top + (containerRect.height * 0.60);
         } else if (startBetType === 'dragon') {
-          // Dragon: top: 60%, right: 66%
-          startX = containerRect.right - (containerRect.width * 0.66);
+          // Dragon: top: 60%, right: 66% means left: 34%
+          startX = containerRect.left + (containerRect.width * 0.34);
           startY = containerRect.top + (containerRect.height * 0.60);
         } else if (startBetType === 'tiger') {
-          // Tiger: top: 60%, right: 30%
-          startX = containerRect.right - (containerRect.width * 0.30);
+          // Tiger: top: 60%, right: 30% means left: 70%
+          startX = containerRect.left + (containerRect.width * 0.70);
           startY = containerRect.top + (containerRect.height * 0.60);
         }
         
-        // End position: top: 36%, right: 34%
-        const endX = containerRect.right - (containerRect.width * 0.34);
+        // End position: top: 36%, right: 34% means left: 66%
+        const endX = containerRect.left + (containerRect.width * 0.66);
         const endY = containerRect.top + (containerRect.height * 0.36);
         
         setPositions({ startX, startY, endX, endY });
