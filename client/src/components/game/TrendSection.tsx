@@ -124,14 +124,14 @@ export default function TrendSection() {
               id={i === 9 ? 'trend-latest' : undefined}
               data-testid={i === 9 && v ? 'trend-latest' : `trend-item-${i}`}
               className={
-                "w-8 h-7 flex flex-wrap text-xs justify-center items-center font-bold select-none rounded border-2 transition-all duration-500 " +
+                "w-8 h-7 flex items-center justify-center font-bold select-none rounded border-2 transition-all duration-500 " +
                 (v === "T"
                   ? "bg-gradient-to-br from-red-600 to-orange-500 text-white border-red-400"
                   : v === "D"
                   ? "bg-gradient-to-br from-blue-600 to-indigo-500 text-white border-blue-400"
                   : v === "Tie"
                   ? "bg-gradient-to-br from-green-600 to-teal-500 text-white border-green-400"
-                  : "bg-transparent border-gray-700 border-opacity-30") +
+                  : "bg-gray-800 bg-opacity-40 border-gray-600 border-opacity-50") +
                 (shouldAnimate ? " trend-item-new trend-item-glow" : "")
               }
               style={{
