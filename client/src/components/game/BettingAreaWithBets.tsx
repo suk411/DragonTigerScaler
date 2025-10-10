@@ -55,11 +55,6 @@ export default function BettingAreaWithBets({
   };
 
   useEffect(() => {
-    playBellSound();
-    setNotificationMessage("Start Betting");
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 1000);
-
     const gameLoop = setInterval(() => {
       setGameSeconds((prev) => {
         const next = (prev + 1) % 25;
