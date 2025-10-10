@@ -1,0 +1,129 @@
+🎯 Task List: Full Game Round Logic (25 sec total)
+🧩 Phase 1: Betting Phase (0s → 15s)
+
+Duration: 15 seconds
+Purpose: Players can place bets.
+
+✅ Tasks:
+
+Round Start Event
+
+Show “Start Betting” notification on screen.
+
+Play bell sound (start-bet sound).
+
+Start countdown timer (15s).
+
+Enable betting buttons/areas (e.g., Dragon, Tiger, Tie).
+
+During Betting (0–15s)
+
+Users can place bets.
+
+Update total bet values live.
+
+UI: betting areas glow softly to show they are active.
+
+End Betting (at 15s)
+
+Show “Stop Betting” notification.
+
+Play bell sound (stop-bet sound).
+
+Disable all betting buttons.
+
+Lock total bets (can’t change).
+
+🃏 Phase 2: Result Phase (15s → 25s)
+
+Duration: 10 seconds
+Purpose: Flip cards, decide winner, show animations, and update balance.
+
+✅ Tasks:
+⏱ (15s → 17s) — Card Flip
+
+Flip both cards (Dragon & Tiger) simultaneously or one after another (0.5s gap).
+
+Cards reveal random ranks (1–13).
+
+Do NOT declare result yet until both are visible.
+
+⏱ (17s → 20s) — Result & Winner Glow
+
+Compare ranks:
+
+Ace (1) → lowest rank
+
+King (13) → highest rank
+
+Tie if equal.
+
+Highlight the winner area:
+
+Winner card glows (e.g., gold pulse effect).
+
+Betting area glows with same color.
+
+Play short “win glow” animation (~1.5s).
+
+⏱ (19s → 21s) — Star Animation to Trend
+
+After glow completes, create a small glowing star on winner area.
+
+Animate it floating to the Trend bar on right side.
+
+Smooth 2-second animation.
+
+Easing: cubic-bezier or framer-motion easeInOut.
+
+All existing trend records slide left smoothly to make space for the new result.
+
+Insert new record (e.g., "Dragon", "Tiger", or "Tie") at rightmost side.
+
+⏱ (21s → 24s) — Settlement & Reset
+
+Clear all bets visually (fade out chips, reset totals).
+
+Adjust user balances according to result:
+
+Winners get payout.
+
+Losers lose bet.
+
+UI smoothly updates balance.
+
+Reset card area (flip both cards back face-down).
+
+🔁 Phase 3: Prepare Next Round (24s → 25s)
+✅ Tasks:
+
+After 25 seconds (round end):
+
+Reset all variables (bets, cards, glow, etc.).
+
+Start again with “Start Betting” notification and bell sound.
+
+Next 25-sec round starts immediately.
+
+🧠 Technical Breakdown Summary
+Phase	Time	Action	Animation/Sound
+Start Betting	0s	Show "Start Betting", enable bets	🔔 Bell sound
+Betting Active	0–15s	Players place bets	Glow on active areas
+Stop Betting	15s	Show "Stop Betting", disable bets	🔔 Bell sound
+Flip Cards	15–17s	Flip both cards	Card flip animation
+Winner Decision	17–20s	Glow winner card & area	Golden glow animation
+Star to Trend	19–21s	Star flies to trend	✨ Smooth floating star
+Trend Update	21s	Old records slide left	Smooth transition
+Settlement	21–24s	Update balances, clear bets	Balance animation
+Reset & Next Round	24–25s	Flip cards back, prepare new round	Bell + Start notification
+
+
+🎨 Animations Needed
+
+Card flip: smooth 3D rotateY (CSS or Framer Motion).
+
+Winner glow: golden pulse → fade out.
+
+Star float: translate from betting area → trend with ease.
+
+Trend slide: shift left with smooth transition.
