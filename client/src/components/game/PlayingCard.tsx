@@ -34,7 +34,32 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
   const displayRank = getRankDisplay();
 
   return (
-    <svg width="126" height="164" viewBox="0 0 126 164" className={`rounded-lg ${winner ? 'winner-card' : ''}`}>
+    <>
+      <style>{`
+        @keyframes winnerCardGlow {
+          0%, 100% { 
+            filter: drop-shadow(0 0 0px transparent);
+            transform: scale(1);
+          }
+          25% { 
+            filter: drop-shadow(0 0 20px #fbbf24) drop-shadow(0 0 30px #fbbf24);
+            transform: scale(1.09);
+          }
+          50% { 
+            filter: drop-shadow(0 0 0px transparent);
+            transform: scale(1);
+          }
+          75% { 
+            filter: drop-shadow(0 0 20px #fbbf24) drop-shadow(0 0 30px #fbbf24);
+            transform: scale(1.09);
+          }
+        }
+        
+        .winner-card {
+          animation: winnerCardGlow 1.2s ease-in-out;
+        }
+      `}</style>
+      <svg width="126" height="164" viewBox="0 0 126 164" className={`rounded-lg ${winner ? 'winner-card' : ''}`}>
       {flipped ? (
         <>
           {/* Card Front */}
