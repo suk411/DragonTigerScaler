@@ -91,12 +91,14 @@ export default function BettingAreaWithBets({
     if (gameSeconds === 17 && currentRound?.winner) {
       const winner = currentRound.winner as BetType;
       setWinningBetArea(winner);
-    }
-    
-    if (gameSeconds === 19 && currentRound?.winner) {
-      const winner = currentRound.winner as BetType;
-      setStarAnimationBetType(winner);
-      setShowStarAnimation(true);
+      
+      // Start star animation 2 seconds after glow starts (after glow completes)
+      setTimeout(() => {
+        if (currentRound?.winner) {
+          setStarAnimationBetType(winner);
+          setShowStarAnimation(true);
+        }
+      }, 2000);
     }
     
     if (gameSeconds === 21) {

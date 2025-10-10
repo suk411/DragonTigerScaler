@@ -12,20 +12,26 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
   const [positions, setPositions] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
 
   useEffect(() => {
-    const bettingArea = document.getElementById(`${startBetType}-betting-area`);
-    const newBadge = document.querySelector('[data-testid="trend-new-badge"]');
-    
-    if (bettingArea && newBadge) {
-      const bettingRect = bettingArea.getBoundingClientRect();
-      const badgeRect = newBadge.getBoundingClientRect();
+    // Small delay to ensure DOM is ready
+    const setupAnimation = () => {
+      const bettingArea = document.getElementById(`${startBetType}-betting-area`);
+      const newBadge = document.querySelector('[data-testid="trend-new-badge"]');
       
-      const startX = bettingRect.left + bettingRect.width / 2;
-      const startY = bettingRect.top + bettingRect.height / 2;
-      const endX = badgeRect.left + badgeRect.width / 2;
-      const endY = badgeRect.top + badgeRect.height / 2;
-      
-      setPositions({ startX, startY, endX, endY });
-    }
+      if (bettingArea && newBadge) {
+        const bettingRect = bettingArea.getBoundingClientRect();
+        const badgeRect = newBadge.getBoundingClientRect();
+        
+        const startX = bettingRect.left + bettingRect.width / 2;
+        const startY = bettingRect.top + bettingRect.height / 2;
+        const endX = badgeRect.left + badgeRect.width / 2;
+        const endY = badgeRect.top + badgeRect.height / 2;
+        
+        setPositions({ startX, startY, endX, endY });
+      }
+    };
+
+    // Wait a tick for DOM to be ready
+    requestAnimationFrame(setupAnimation);
 
     const timer = setTimeout(() => {
       setIsAnimating(false);
