@@ -61,21 +61,25 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
             opacity: 1;
             transform: translate(0, 0) scale(1.5) rotate(0deg);
           }
-          15% {
+          20% {
             opacity: 1;
-            transform: translate(${deltaX * 0.15}px, ${deltaY * 0.15 - 25}px) scale(1.8) rotate(54deg);
+            transform: translate(${deltaX * 0.2}px, ${deltaY * 0.2 - 20}px) scale(1.7) rotate(72deg);
           }
           40% {
             opacity: 1;
-            transform: translate(${deltaX * 0.4}px, ${deltaY * 0.4 - 35}px) scale(2) rotate(144deg);
+            transform: translate(${deltaX * 0.4}px, ${deltaY * 0.4 - 30}px) scale(1.9) rotate(144deg);
           }
-          70% {
+          60% {
             opacity: 1;
-            transform: translate(${deltaX * 0.75}px, ${deltaY * 0.75 - 15}px) scale(1.5) rotate(252deg);
+            transform: translate(${deltaX * 0.6}px, ${deltaY * 0.6 - 20}px) scale(1.6) rotate(216deg);
           }
-          90% {
-            opacity: 0.8;
-            transform: translate(${deltaX * 0.95}px, ${deltaY * 0.95}px) scale(1) rotate(324deg);
+          80% {
+            opacity: 0.9;
+            transform: translate(${deltaX * 0.85}px, ${deltaY * 0.85}px) scale(1.2) rotate(288deg);
+          }
+          95% {
+            opacity: 0.5;
+            transform: translate(${deltaX * 0.98}px, ${deltaY * 0.98}px) scale(0.8) rotate(342deg);
           }
           100% {
             opacity: 0;
@@ -85,21 +89,23 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
         
         @keyframes trailFade {
           0% {
-            opacity: 0.7;
+            opacity: 0.6;
             transform: scale(1);
           }
           100% {
             opacity: 0;
-            transform: scale(0.2);
+            transform: scale(0.3);
           }
         }
         
         .star-trend-particle {
-          animation: starToTrend 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          animation: starToTrend 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+          will-change: transform, opacity;
         }
         
         .star-trail {
           animation: trailFade 0.6s ease-out forwards;
+          will-change: transform, opacity;
         }
       `}</style>
       
