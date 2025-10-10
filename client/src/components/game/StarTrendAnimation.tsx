@@ -13,16 +13,16 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
 
   useEffect(() => {
     const bettingArea = document.getElementById(`${startBetType}-betting-area`);
-    const trendElement = document.getElementById('trend-latest');
+    const newBadge = document.querySelector('[data-testid="trend-new-badge"]');
     
-    if (bettingArea && trendElement) {
+    if (bettingArea && newBadge) {
       const bettingRect = bettingArea.getBoundingClientRect();
-      const trendRect = trendElement.getBoundingClientRect();
+      const badgeRect = newBadge.getBoundingClientRect();
       
       const startX = bettingRect.left + bettingRect.width / 2;
       const startY = bettingRect.top + bettingRect.height / 2;
-      const endX = trendRect.left + trendRect.width / 2;
-      const endY = trendRect.top + trendRect.height / 2;
+      const endX = badgeRect.left + badgeRect.width / 2;
+      const endY = badgeRect.top + badgeRect.height / 2;
       
       setPositions({ startX, startY, endX, endY });
     }
@@ -52,35 +52,43 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
         @keyframes starToTrend {
           0% {
             opacity: 1;
-            transform: translate(0, 0) scale(1) rotate(0deg);
+            transform: translate(0, 0) scale(1.2) rotate(0deg);
+          }
+          20% {
+            opacity: 1;
+            transform: translate(${deltaX * 0.15}px, ${deltaY * 0.15 - 20}px) scale(1.6) rotate(72deg);
           }
           50% {
             opacity: 1;
-            transform: translate(${deltaX * 0.5}px, ${deltaY * 0.5}px) scale(1.5) rotate(180deg);
+            transform: translate(${deltaX * 0.5}px, ${deltaY * 0.5 - 30}px) scale(1.8) rotate(180deg);
+          }
+          80% {
+            opacity: 1;
+            transform: translate(${deltaX * 0.9}px, ${deltaY * 0.9}px) scale(1.2) rotate(288deg);
           }
           100% {
-            opacity: 0;
-            transform: translate(${deltaX}px, ${deltaY}px) scale(0.5) rotate(360deg);
+            opacity: 0.3;
+            transform: translate(${deltaX}px, ${deltaY}px) scale(0.8) rotate(360deg);
           }
         }
         
         @keyframes trailFade {
           0% {
-            opacity: 0.8;
+            opacity: 0.6;
             transform: scale(1);
           }
           100% {
             opacity: 0;
-            transform: scale(0.5);
+            transform: scale(0.3);
           }
         }
         
         .star-trend-particle {
-          animation: starToTrend 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+          animation: starToTrend 2s cubic-bezier(0.34, 0.56, 0.64, 1) forwards;
         }
         
         .star-trail {
-          animation: trailFade 0.4s ease-out forwards;
+          animation: trailFade 0.5s ease-out forwards;
         }
       `}</style>
       
