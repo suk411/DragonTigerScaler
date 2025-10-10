@@ -42,16 +42,16 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
             transform: scale(1);
           }
           25% { 
-            filter: drop-shadow(0 0 20px #fbbf24) drop-shadow(0 0 30px #fbbf24);
-            transform: scale(1.09);
+            filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 12px #fbbf24);
+            transform: scale(1.05);
           }
           50% { 
             filter: drop-shadow(0 0 0px transparent);
             transform: scale(1);
           }
           75% { 
-            filter: drop-shadow(0 0 20px #fbbf24) drop-shadow(0 0 30px #fbbf24);
-            transform: scale(1.09);
+            filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 12px #fbbf24);
+            transform: scale(1.05);
           }
         }
         
