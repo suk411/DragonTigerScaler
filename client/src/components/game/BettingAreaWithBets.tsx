@@ -26,7 +26,7 @@ export default function BettingAreaWithBets({
   const [currentPhase, setCurrentPhase] = useState<"betting" | "revealing">(
     "betting",
   );
-  const [timeRemaining, setTimeRemaining] = useState(15);
+  const [gameSeconds, setGameSeconds] = useState(0);
   const [animations, setAnimations] = useState<
     Array<{ id: string; targetId: string; amount: number }>
   >([]);
@@ -46,73 +46,71 @@ export default function BettingAreaWithBets({
   } = useGameManagerContext();
   const { toast } = useToast();
 
+  const playBellSound = () => {
+    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGe98OScTgwOUKjo77RgGwU7kdny0HgsBS= ');
+    audio.volume = 0.3;
+    audio.play().catch(() => {});
+  };
+
   useEffect(() => {
-    // Show "Start Betting" on mount
+    playBellSound();
     setNotificationMessage("Start Betting");
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 1000);
 
-    // Main game loop
     const gameLoop = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (currentPhase === "betting") {
-          if (prev <= 1) {
-            // Switch to revealing phase
-            setCurrentPhase("revealing");
-            setNotificationMessage("Stop Betting");
-            setShowNotification(true);
-            setTimeout(() => setShowNotification(false), 1000);
-            return 10;
-          }
-          return prev - 1;
-        } else {
-          // Revealing phase
-          if (prev <= 1) {
-            // Switch back to betting phase
-            setCurrentPhase("betting");
-            setNotificationMessage("Start Betting");
-            setShowNotification(true);
-            setTimeout(() => setShowNotification(false), 1000);
-            setWinningBetArea(null);
-            return 15;
-          }
-          return prev - 1;
+      setGameSeconds((prev) => {
+        const next = (prev + 1) % 25;
+        
+        if (next === 0) {
+          playBellSound();
+          setCurrentPhase("betting");
+          setNotificationMessage("Start Betting");
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 1000);
+          setWinningBetArea(null);
         }
+        
+        else if (next === 15) {
+          playBellSound();
+          setCurrentPhase("revealing");
+          setNotificationMessage("Stop Betting");
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 1000);
+        }
+        
+        else if (next === 17) {
+          if (currentRound?.winner) {
+            const winner = currentRound.winner as BetType;
+            setWinningBetArea(winner);
+          }
+        }
+        
+        else if (next === 19) {
+          if (currentRound?.winner) {
+            const winner = currentRound.winner as BetType;
+            setStarAnimationBetType(winner);
+            setShowStarAnimation(true);
+          }
+        }
+        
+        else if (next === 21) {
+          updateBalance();
+        }
+        
+        else if (next === 24) {
+          clearBets();
+          setWinningBetArea(null);
+        }
+        
+        return next;
       });
     }, 1000);
 
     return () => clearInterval(gameLoop);
-  }, [currentPhase]);
+  }, [currentRound, updateBalance, clearBets]);
 
-  // Handle winner glow and star animation at 4th second of revealing phase (timeRemaining = 6)
-  useEffect(() => {
-    if (
-      currentPhase === "revealing" &&
-      timeRemaining === 6 &&
-      currentRound?.winner
-    ) {
-      const winner = currentRound.winner as BetType;
-      setWinningBetArea(winner);
-      // Trigger star animation
-      setStarAnimationBetType(winner);
-      setShowStarAnimation(true);
-    }
-  }, [currentPhase, timeRemaining, currentRound]);
-
-  // Handle balance update at 5th second (timeRemaining = 5)
-  useEffect(() => {
-    if (currentPhase === "revealing" && timeRemaining === 5) {
-      updateBalance();
-    }
-  }, [currentPhase, timeRemaining, updateBalance]);
-
-  // Clear bets and reset at the end of revealing phase
-  useEffect(() => {
-    if (currentPhase === "revealing" && timeRemaining === 1) {
-      clearBets();
-      setWinningBetArea(null);
-    }
-  }, [currentPhase, timeRemaining, clearBets]);
+  const timeRemaining = gameSeconds <= 15 ? 15 - gameSeconds : 25 - gameSeconds;
 
   const handleBetClick = async (betType: BetType) => {
     if (currentPhase !== "betting") {
