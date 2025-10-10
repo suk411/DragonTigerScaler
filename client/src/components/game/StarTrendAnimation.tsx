@@ -13,20 +13,31 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
 
   useEffect(() => {
     const setupAnimation = () => {
-      const bettingArea = document.getElementById(`${startBetType}-betting-area`);
-      const trendContainer = document.querySelector('[data-testid="trend-container"]');
+      const gameContainer = document.querySelector('.relative.w-full.h-full');
       
-      if (bettingArea && trendContainer) {
-        const bettingRect = bettingArea.getBoundingClientRect();
-        const trendRect = trendContainer.getBoundingClientRect();
+      if (gameContainer) {
+        const containerRect = gameContainer.getBoundingClientRect();
         
-        // Start position: center of betting area
-        const startX = bettingRect.left + bettingRect.width / 2;
-        const startY = bettingRect.top + bettingRect.height / 2;
+        // Start positions based on bet type (relative to game container)
+        let startX, startY;
         
-        // End position: right edge of trend container (where NEW badge is)
-        const endX = trendRect.right - 30;
-        const endY = trendRect.top + trendRect.height / 2;
+        if (startBetType === 'tie') {
+          // Tie: top: 60%, right: 48%
+          startX = containerRect.right - (containerRect.width * 0.48);
+          startY = containerRect.top + (containerRect.height * 0.60);
+        } else if (startBetType === 'dragon') {
+          // Dragon: top: 60%, right: 66%
+          startX = containerRect.right - (containerRect.width * 0.66);
+          startY = containerRect.top + (containerRect.height * 0.60);
+        } else if (startBetType === 'tiger') {
+          // Tiger: top: 60%, right: 30%
+          startX = containerRect.right - (containerRect.width * 0.30);
+          startY = containerRect.top + (containerRect.height * 0.60);
+        }
+        
+        // End position: top: 36%, right: 34%
+        const endX = containerRect.right - (containerRect.width * 0.34);
+        const endY = containerRect.top + (containerRect.height * 0.36);
         
         setPositions({ startX, startY, endX, endY });
       }
@@ -37,7 +48,7 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
     const timer = setTimeout(() => {
       setIsAnimating(false);
       onComplete();
-    }, 1500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [onComplete, startBetType]);
@@ -99,12 +110,12 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
         }
         
         .star-trend-particle {
-          animation: starToTrend 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+          animation: starToTrend 3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
           will-change: transform, opacity;
         }
         
         .star-trail {
-          animation: trailFade 0.6s ease-out forwards;
+          animation: trailFade 1.2s ease-out forwards;
           will-change: transform, opacity;
         }
       `}</style>
