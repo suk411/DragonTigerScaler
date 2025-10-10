@@ -12,31 +12,32 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
   const [positions, setPositions] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
 
   useEffect(() => {
-    // Small delay to ensure DOM is ready
     const setupAnimation = () => {
       const bettingArea = document.getElementById(`${startBetType}-betting-area`);
-      const newBadge = document.querySelector('[data-testid="trend-new-badge"]');
+      const trendContainer = document.querySelector('[data-testid="trend-container"]');
       
-      if (bettingArea && newBadge) {
+      if (bettingArea && trendContainer) {
         const bettingRect = bettingArea.getBoundingClientRect();
-        const badgeRect = newBadge.getBoundingClientRect();
+        const trendRect = trendContainer.getBoundingClientRect();
         
+        // Start position: center of betting area
         const startX = bettingRect.left + bettingRect.width / 2;
         const startY = bettingRect.top + bettingRect.height / 2;
-        const endX = badgeRect.left + badgeRect.width / 2;
-        const endY = badgeRect.top + badgeRect.height / 2;
+        
+        // End position: right edge of trend container (where NEW badge is)
+        const endX = trendRect.right - 30;
+        const endY = trendRect.top + trendRect.height / 2;
         
         setPositions({ startX, startY, endX, endY });
       }
     };
 
-    // Wait a tick for DOM to be ready
     requestAnimationFrame(setupAnimation);
 
     const timer = setTimeout(() => {
       setIsAnimating(false);
       onComplete();
-    }, 2000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, [onComplete, startBetType]);
@@ -58,88 +59,92 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
         @keyframes starToTrend {
           0% {
             opacity: 1;
-            transform: translate(0, 0) scale(1.2) rotate(0deg);
+            transform: translate(0, 0) scale(1.5) rotate(0deg);
           }
-          20% {
+          15% {
             opacity: 1;
-            transform: translate(${deltaX * 0.15}px, ${deltaY * 0.15 - 20}px) scale(1.6) rotate(72deg);
+            transform: translate(${deltaX * 0.15}px, ${deltaY * 0.15 - 25}px) scale(1.8) rotate(54deg);
           }
-          50% {
+          40% {
             opacity: 1;
-            transform: translate(${deltaX * 0.5}px, ${deltaY * 0.5 - 30}px) scale(1.8) rotate(180deg);
+            transform: translate(${deltaX * 0.4}px, ${deltaY * 0.4 - 35}px) scale(2) rotate(144deg);
           }
-          80% {
+          70% {
             opacity: 1;
-            transform: translate(${deltaX * 0.9}px, ${deltaY * 0.9}px) scale(1.2) rotate(288deg);
+            transform: translate(${deltaX * 0.75}px, ${deltaY * 0.75 - 15}px) scale(1.5) rotate(252deg);
+          }
+          90% {
+            opacity: 0.8;
+            transform: translate(${deltaX * 0.95}px, ${deltaY * 0.95}px) scale(1) rotate(324deg);
           }
           100% {
-            opacity: 0.3;
-            transform: translate(${deltaX}px, ${deltaY}px) scale(0.8) rotate(360deg);
+            opacity: 0;
+            transform: translate(${deltaX}px, ${deltaY}px) scale(0.5) rotate(360deg);
           }
         }
         
         @keyframes trailFade {
           0% {
-            opacity: 0.6;
+            opacity: 0.7;
             transform: scale(1);
           }
           100% {
             opacity: 0;
-            transform: scale(0.3);
+            transform: scale(0.2);
           }
         }
         
         .star-trend-particle {
-          animation: starToTrend 2s cubic-bezier(0.34, 0.56, 0.64, 1) forwards;
+          animation: starToTrend 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
         
         .star-trail {
-          animation: trailFade 0.5s ease-out forwards;
+          animation: trailFade 0.6s ease-out forwards;
         }
       `}</style>
       
       {/* Trail particles */}
       <div
-        className="fixed star-trail z-50"
+        className="fixed star-trail z-[100]"
         style={{
           top: `${positions.startY}px`,
           left: `${positions.startX}px`,
           transform: 'translate(-50%, -50%)',
           pointerEvents: "none",
-          animationDelay: '0.05s'
+          animationDelay: '0.08s'
         }}
       >
         <Star 
-          className={`w-6 h-6 ${starColorClass}`}
+          className={`w-7 h-7 ${starColorClass}`}
           fill="currentColor"
           style={{
-            filter: `blur(2px) drop-shadow(0 0 15px ${starColor})`,
+            filter: `blur(3px) drop-shadow(0 0 18px ${starColor})`,
           }}
         />
       </div>
       
       <div
-        className="fixed star-trail z-50"
+        className="fixed star-trail z-[100]"
         style={{
           top: `${positions.startY}px`,
           left: `${positions.startX}px`,
           transform: 'translate(-50%, -50%)',
           pointerEvents: "none",
-          animationDelay: '0.1s'
+          animationDelay: '0.15s'
         }}
       >
         <Star 
-          className={`w-6 h-6 ${starColorClass}`}
+          className={`w-7 h-7 ${starColorClass}`}
           fill="currentColor"
           style={{
-            filter: `blur(3px) drop-shadow(0 0 20px ${starColor})`,
+            filter: `blur(4px) drop-shadow(0 0 22px ${starColor})`,
           }}
         />
       </div>
       
       {/* Main star */}
       <div
-        className="fixed star-trend-particle z-50"
+        className="fixed star-trend-particle z-[100]"
         style={{
           top: `${positions.startY}px`,
           left: `${positions.startX}px`,
@@ -150,18 +155,18 @@ export default function StarTrendAnimation({ startBetType, onComplete }: StarTre
       >
         <div className="relative">
           <Star 
-            className={`w-8 h-8 ${starColorClass}`}
+            className={`w-10 h-10 ${starColorClass}`}
             fill="currentColor"
             style={{
-              filter: `drop-shadow(0 0 12px ${starColor})`,
+              filter: `drop-shadow(0 0 15px ${starColor}) drop-shadow(0 0 25px ${starColor})`,
             }}
           />
           {/* Glow ring */}
           <div 
             className="absolute inset-0 rounded-full"
             style={{
-              background: `radial-gradient(circle, ${starColor}40 0%, transparent 70%)`,
-              transform: 'scale(1.5)',
+              background: `radial-gradient(circle, ${starColor}50 0%, transparent 70%)`,
+              transform: 'scale(2)',
             }}
           />
         </div>

@@ -108,6 +108,8 @@ export default function BettingAreaWithBets({
     if (gameSeconds === 24) {
       clearBets();
       setWinningBetArea(null);
+      setShowStarAnimation(false);
+      setStarAnimationBetType(null);
     }
   }, [gameSeconds, currentRound, updateBalance, clearBets]);
 
