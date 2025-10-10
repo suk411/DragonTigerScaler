@@ -33,6 +33,9 @@ Preferred communication style: Simple, everyday language.
 - Casino aesthetic with gradient backgrounds, glow effects, and premium visual treatments
 - Percentage-based positioning for responsive scaling within the game container
 - Animation system using CSS transforms and transitions for coin animations, card flips, and visual feedback
+- Butter-smooth star animation with cubic-bezier easing (0.34, 1.56, 0.64, 1) for bouncy effects
+- Separate path and transform animations for optimal performance and smoothness
+- Trail particle system with staggered delays for visual depth
 
 ### Backend Architecture
 
