@@ -75,28 +75,28 @@ export default function TrendSection() {
       <div className="game-element text-purple-300 rounded-lg border-purple-500 border-2 p-2 select-none z-30"
            style={{ 
              top: '-30%', 
-             right: '2%',
+             right: '10%',
              background: 'linear-gradient(135deg, rgba(88, 28, 135, 0.8), rgba(59, 130, 246, 0.6))',
              boxShadow: '0 4px 10px rgba(147, 51, 234, 0.4)'
            }}>
-        <FaUserAlt size={20} />
+        <FaUserAlt size={22} />
       </div>
 
       <div className="game-element text-purple-900 rounded-lg border-purple-400 border-2 select-none p-2"
            style={{ 
-             top: '32.8%', 
-             left: '-18%', 
+             top: '35%', 
+             left: '-3%', 
              zIndex: 400,
              background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
              boxShadow: '0 4px 10px rgba(147, 51, 234, 0.4)'
            }}>
-        <MdTrendingUp size={22} />
+        <MdTrendingUp size={26} />
       </div>
 
       <div className="game-element text-purple-900 rounded-t-lg border-purple-400 border-2 select-none px-3 py-1"
            style={{ 
-             top: '6%', 
-             right: '17%', 
+             top: '4%', 
+             right: '25%', 
              zIndex: 400,
              background: 'linear-gradient(135deg, #a78bfa, #c084fc)',
              boxShadow: '0 4px 10px rgba(147, 51, 234, 0.4)'
@@ -108,8 +108,8 @@ export default function TrendSection() {
       <div className="game-element py-2 flex items-center gap-2 border-purple-500 border-2 justify-center z-40 rounded-lg trend-container"
            style={{ 
              top: '30%', 
-             right: '17.5%', 
-             width: '90%',
+             right: '26%', 
+             width: '70%',
              background: 'rgba(0, 0, 0, 0.5)',
              boxShadow: '0 4px 10px rgba(147, 51, 234, 0.4)'
            }}
