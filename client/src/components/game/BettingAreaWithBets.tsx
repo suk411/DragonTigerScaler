@@ -424,11 +424,11 @@ export default function BettingAreaWithBets({
           roundWinner={currentRound?.winner || null}
         />
       </div>
-
+      {/* test icon */}
       <div className=" absolute text-purple-300 rounded-lg border-purple-500 border-2 p-2  z-80"
            style={{ 
-             top: '36%', 
-             right: '34%',
+             top: '20%', 
+             right: '50%',
              height: '5%',
              width:   '3%',
               zIndex: 700,
