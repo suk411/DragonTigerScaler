@@ -1,3 +1,9 @@
+import avatar1 from '@assets/image_1760067077241.png';
+import avatar2 from '@assets/image_1760067079019.png';
+import avatar3 from '@assets/image_1760067080706.png';
+import avatar4 from '@assets/image_1760067082589.png';
+import avatar5 from '@assets/image_1760067085052.png';
+import avatar6 from '@assets/image_1760067094684.png';
 
 interface LuckyPlayer {
   id: string;
@@ -9,6 +15,8 @@ interface LuckyPlayer {
 interface LuckySectionProps {
   luckyPlayers: LuckyPlayer[];
 }
+
+const defaultAvatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
 
 export default function LuckySection({ luckyPlayers }: LuckySectionProps) {
   // Show top 3 lucky players or fill with empty slots
@@ -43,34 +51,16 @@ export default function LuckySection({ luckyPlayers }: LuckySectionProps) {
             </div>
           )}
           
-          {/* Avatar with border only */}
-          {player.avatar ? (
-            <img 
-              src={player.avatar} 
-              alt={`Lucky ${index + 1}`}
-              className="w-12 h-12 rounded-full border-2 border-yellow-400 object-cover"
-              onError={(e) => {
-                // Fallback if image fails to load
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                if (target.nextElementSibling) {
-                  (target.nextElementSibling as HTMLElement).style.display = 'flex';
-                }
-              }}
-            />
-          ) : null}
-          
-          {/* Fallback avatar placeholder */}
-          <div 
-            className="w-12 h-12 rounded-full border-2 border-gray-600 bg-gray-800 flex items-center justify-center"
-            style={{ display: player.avatar ? 'none' : 'flex' }}
-          >
-            <span className="text-gray-500 text-xs">👤</span>
-          </div>
+          {/* Avatar - use provided image or default avatar */}
+          <img 
+            src={player.avatar || defaultAvatars[index % defaultAvatars.length]} 
+            alt={`Lucky ${index + 1}`}
+            className="w-12 h-12 rounded-full border-2 border-yellow-400 object-cover"
+          />
           
           {/* Balance below avatar */}
           <div className="text-green-400 text-xs font-bold">
-            {player.amount > 0 ? `₹${player.amount.toLocaleString()}` : '---'}
+            {player.amount > 0 ? `${player.amount.toLocaleString()}` : '---'}
           </div>
         </div>
       ))}
