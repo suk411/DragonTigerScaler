@@ -379,9 +379,9 @@ export default function BettingAreaWithBets({
       >
         <WinnersSection 
           winners={[
-            { id: '1', avatar: '/placeholder-avatar-1.png', username: 'P188095', amount: 1005377 },
-            { id: '2', avatar: '/placeholder-avatar-2.png', username: 'G260679', amount: 877480 },
-            { id: '3', avatar: '/placeholder-avatar-3.png', username: 'Zoe', amount: 88237 }
+            { id: '1', avatar: '', username: 'P188095', amount: 1005377 },
+            { id: '2', avatar: '', username: 'G260679', amount: 877480 },
+            { id: '3', avatar: '', username: 'Zoe', amount: 88237 }
           ]}
         />
       </div>
@@ -398,9 +398,9 @@ export default function BettingAreaWithBets({
       >
         <LuckySection 
           luckyPlayers={[
-            { id: '1', avatar: '/placeholder-avatar-4.png', username: 'Lucky1', amount: 500000 },
-            { id: '2', avatar: '/placeholder-avatar-5.png', username: 'Lucky2', amount: 350000 },
-            { id: '3', avatar: '/placeholder-avatar-6.png', username: 'Lucky3', amount: 125000 }
+            { id: '1', avatar: '', username: 'Lucky1', amount: 500000 },
+            { id: '2', avatar: '', username: 'Lucky2', amount: 350000 },
+            { id: '3', avatar: '', username: 'Lucky3', amount: 125000 }
           ]}
         />
       </div>
