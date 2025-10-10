@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import CoinAnimation from "./CoinAnimation";
 import { useToast } from "@/hooks/use-toast";
+import { FaUserAlt } from "react-icons/fa";
 
 interface BettingAreaProps {
   timer: number;
@@ -422,6 +423,17 @@ export default function BettingAreaWithBets({
           tigerCard={currentRound?.tiger_card || null}
           roundWinner={currentRound?.winner || null}
         />
+      </div>
+
+      <div className=" absolute text-purple-300 rounded-lg border-purple-500 border-2 p-2  z-80"
+           style={{ 
+             top: '36%', 
+             right: '34%',
+             height: '5%',
+             width:   '3%',
+              zIndex: 700,
+           }}>
+        <FaUserAlt size={22} />
       </div>
 
       {/* Decorative Border */}
