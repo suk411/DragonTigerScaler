@@ -28,39 +28,33 @@ function Card({ cardString, flipped, winner }: CardProps) {
 interface GameCardsProps {
   currentPhase: 'betting' | 'revealing';
   timeRemaining: number;
+  gameSeconds: number;
   dragonCard: string | null;
   tigerCard: string | null;
   roundWinner: string | null;
 }
 
-export default function GameCards({ currentPhase, timeRemaining, dragonCard, tigerCard, roundWinner }: GameCardsProps) {
+export default function GameCards({ currentPhase, timeRemaining, gameSeconds, dragonCard, tigerCard, roundWinner }: GameCardsProps) {
   const [flipped, setFlipped] = useState([false, false]);
   const [winner, setWinner] = useState<number | null>(null);
 
   useEffect(() => {
-    if (currentPhase === 'betting') {
-      // Reset during betting phase
+    if (gameSeconds === 0 || gameSeconds < 15) {
       setFlipped([false, false]);
       setWinner(null);
-    } else if (currentPhase === 'revealing') {
-      // Revealing phase: 10 seconds total
-      if (timeRemaining === 9) {
-        // 1st second: flip left card (dragon)
-        setFlipped([true, false]);
-      } else if (timeRemaining === 8) {
-        // 2nd second: flip right card (tiger)
-        setFlipped([true, true]);
-      } else if (timeRemaining === 7) {
-        // 3rd second: glow winner card
-        if (roundWinner === 'dragon') setWinner(0);
-        else if (roundWinner === 'tiger') setWinner(1);
-        else setWinner(null);
-      }
-      // 4th second (timeRemaining === 6): betting area glows (handled in BettingAreaWithBets)
-      // 5th second (timeRemaining === 5): balance update (handled in BettingAreaWithBets)
-      // Remaining 5 seconds: clear and prepare for next round
     }
-  }, [currentPhase, timeRemaining, roundWinner]);
+    else if (gameSeconds === 15) {
+      setFlipped([true, false]);
+    }
+    else if (gameSeconds === 16) {
+      setFlipped([true, true]);
+    }
+    else if (gameSeconds === 17) {
+      if (roundWinner === 'dragon') setWinner(0);
+      else if (roundWinner === 'tiger') setWinner(1);
+      else setWinner(null);
+    }
+  }, [gameSeconds, roundWinner]);
 
   return (
     <>

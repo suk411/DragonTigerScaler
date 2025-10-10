@@ -79,36 +79,34 @@ export default function BettingAreaWithBets({
           setTimeout(() => setShowNotification(false), 1000);
         }
         
-        else if (next === 17) {
-          if (currentRound?.winner) {
-            const winner = currentRound.winner as BetType;
-            setWinningBetArea(winner);
-          }
-        }
-        
-        else if (next === 19) {
-          if (currentRound?.winner) {
-            const winner = currentRound.winner as BetType;
-            setStarAnimationBetType(winner);
-            setShowStarAnimation(true);
-          }
-        }
-        
-        else if (next === 21) {
-          updateBalance();
-        }
-        
-        else if (next === 24) {
-          clearBets();
-          setWinningBetArea(null);
-        }
-        
         return next;
       });
     }, 1000);
 
     return () => clearInterval(gameLoop);
-  }, [currentRound, updateBalance, clearBets]);
+  }, []);
+
+  useEffect(() => {
+    if (gameSeconds === 17 && currentRound?.winner) {
+      const winner = currentRound.winner as BetType;
+      setWinningBetArea(winner);
+    }
+    
+    if (gameSeconds === 19 && currentRound?.winner) {
+      const winner = currentRound.winner as BetType;
+      setStarAnimationBetType(winner);
+      setShowStarAnimation(true);
+    }
+    
+    if (gameSeconds === 21) {
+      updateBalance();
+    }
+    
+    if (gameSeconds === 24) {
+      clearBets();
+      setWinningBetArea(null);
+    }
+  }, [gameSeconds, currentRound, updateBalance, clearBets]);
 
   const timeRemaining = gameSeconds <= 15 ? 15 - gameSeconds : 25 - gameSeconds;
 
@@ -410,6 +408,7 @@ export default function BettingAreaWithBets({
         <GameCards
           currentPhase={currentPhase}
           timeRemaining={timeRemaining}
+          gameSeconds={gameSeconds}
           dragonCard={currentRound?.dragon_card || null}
           tigerCard={currentRound?.tiger_card || null}
           roundWinner={currentRound?.winner || null}
