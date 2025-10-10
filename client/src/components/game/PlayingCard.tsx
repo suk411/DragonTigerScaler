@@ -60,39 +60,40 @@ export default function PlayingCard({ rank, suit, flipped = false, winner = fals
         }
       `}</style>
       <svg width="126" height="164" viewBox="0 0 126 164" className={`rounded-lg ${winner ? 'winner-card' : ''}`}>
-      {flipped ? (
-        <>
-          {/* Card Front */}
-          <rect width="126" height="164" rx="16" fill="white" stroke="#d1d5db" strokeWidth="2" />
+        {flipped ? (
+          <>
+            {/* Card Front */}
+            <rect width="126" height="164" rx="16" fill="white" stroke="#d1d5db" strokeWidth="2" />
 
-          {/* Top-left corner (larger rank & suit) */}
-          <text x="12" y="32" fontSize="30" fontWeight="bold" fill={color}>
-            {displayRank}
-          </text>
-          <text x="12" y="62" fontSize="34" fill={color}>
-            {suitSymbol}
-          </text>
+            {/* Top-left corner (larger rank & suit) */}
+            <text x="12" y="32" fontSize="30" fontWeight="bold" fill={color}>
+              {displayRank}
+            </text>
+            <text x="12" y="62" fontSize="34" fill={color}>
+              {suitSymbol}
+            </text>
 
-          {/* Center large suit symbol (bigger & slightly lower) */}
-          <text x="66" y="125" fontSize="110" fill={color} textAnchor="middle">
-            {suitSymbol}
-          </text>
-        </>
-      ) : (
-        <>
-          {/* Card Back */}
-          <rect width="126" height="164" rx="16" fill="url(#checkerboard)" stroke="white" strokeWidth="6" />
-          <defs>
-            <pattern id="checkerboard" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-              <rect width="6" height="6" fill="#dc2626" />
-              <rect x="6" y="0" width="6" height="6" fill="white" />
-              <rect x="0" y="6" width="6" height="6" fill="white" />
-              <rect x="6" y="6" width="6" height="6" fill="#dc2626" />
-            </pattern>
-          </defs>
-          <rect width="126" height="164" rx="16" fill="white" opacity="0.1" />
-        </>
-      )}
-    </svg>
+            {/* Center large suit symbol (bigger & slightly lower) */}
+            <text x="66" y="125" fontSize="110" fill={color} textAnchor="middle">
+              {suitSymbol}
+            </text>
+          </>
+        ) : (
+          <>
+            {/* Card Back */}
+            <rect width="126" height="164" rx="16" fill="url(#checkerboard)" stroke="white" strokeWidth="6" />
+            <defs>
+              <pattern id="checkerboard" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                <rect width="6" height="6" fill="#dc2626" />
+                <rect x="6" y="0" width="6" height="6" fill="white" />
+                <rect x="0" y="6" width="6" height="6" fill="white" />
+                <rect x="6" y="6" width="6" height="6" fill="#dc2626" />
+              </pattern>
+            </defs>
+            <rect width="126" height="164" rx="16" fill="white" opacity="0.1" />
+          </>
+        )}
+      </svg>
+    </>
   );
 }
