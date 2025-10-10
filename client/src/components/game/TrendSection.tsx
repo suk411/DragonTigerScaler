@@ -118,6 +118,9 @@ export default function TrendSection() {
           const isLatest = i === 9 && v !== '';
           const shouldAnimate = isLatest && isNewEntry;
           
+          // Don't render empty boxes
+          if (!v) return <div key={`${i}-empty`} className="w-8 h-7" />;
+          
           return (
             <div
               key={`${i}-${v}-${roundHistory.length}`}
@@ -129,13 +132,11 @@ export default function TrendSection() {
                   ? "bg-gradient-to-br from-red-600 to-orange-500 text-white border-red-400"
                   : v === "D"
                   ? "bg-gradient-to-br from-blue-600 to-indigo-500 text-white border-blue-400"
-                  : v === "Tie"
-                  ? "bg-gradient-to-br from-green-600 to-teal-500 text-white border-green-400"
-                  : "bg-gray-700 bg-opacity-50 border-gray-600 text-gray-500") +
+                  : "bg-gradient-to-br from-green-600 to-teal-500 text-white border-green-400") +
                 (shouldAnimate ? " trend-item-new trend-item-glow" : "")
               }
               style={{
-                boxShadow: v ? '0 2px 6px rgba(0, 0, 0, 0.3)' : 'none'
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)'
               }}
             >
               {v}
