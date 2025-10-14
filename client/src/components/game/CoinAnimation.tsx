@@ -9,6 +9,7 @@ interface CoinAnimationProps {
   amount: number;
   targetId: string;
   onComplete: () => void;
+  startPosition?: { x: number; y: number };
 }
 
 const CHIP_IMAGES = {
@@ -19,9 +20,10 @@ const CHIP_IMAGES = {
   10000: chip10k,
 };
 
-export default function CoinAnimation({ amount, targetId, onComplete }: CoinAnimationProps) {
+export default function CoinAnimation({ amount, targetId, onComplete, startPosition }: CoinAnimationProps) {
   const [isAnimating, setIsAnimating] = useState(true);
   const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 });
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const targetMap: Record<string, string> = {
@@ -40,13 +42,19 @@ export default function CoinAnimation({ amount, targetId, onComplete }: CoinAnim
       setTargetPosition({ x: centerX, y: centerY });
     }
 
+    if (startPosition) {
+      setStartPos(startPosition);
+    } else {
+      setStartPos({ x: window.innerWidth / 2, y: window.innerHeight - 80 });
+    }
+
     const timer = setTimeout(() => {
       setIsAnimating(false);
       onComplete();
-    }, 800);
+    }, 600);
 
     return () => clearTimeout(timer);
-  }, [onComplete, targetId]);
+  }, [onComplete, targetId, startPosition]);
 
   if (!isAnimating) return null;
 
@@ -56,42 +64,46 @@ export default function CoinAnimation({ amount, targetId, onComplete }: CoinAnim
   else if (amount >= 100) chipSrc = chip100;
   else if (amount >= 50) chipSrc = chip50;
 
+  const deltaX = targetPosition.x - startPos.x;
+  const deltaY = targetPosition.y - startPos.y;
+
   return (
     <>
       <style>{`
-        @keyframes coinFly {
+        @keyframes coinFly60fps {
           0% {
-            transform: translate(0, 0) scale(1);
+            transform: translate(0, 0) scale(1) rotate(0deg);
             opacity: 1;
           }
           50% {
-            transform: translate(var(--tx), var(--ty)) scale(1.2);
-            opacity: 0.8;
+            transform: translate(calc(var(--dx) * 0.5), calc(var(--dy) * 0.5)) scale(1.3) rotate(180deg);
+            opacity: 0.9;
           }
           100% {
-            transform: translate(var(--tx), var(--ty)) scale(0.5);
+            transform: translate(var(--dx), var(--dy)) scale(0.6) rotate(360deg);
             opacity: 0;
           }
         }
-        .coin-flying {
+        .coin-flying-smooth {
           position: fixed;
           z-index: 1000;
           pointer-events: none;
-          animation: coinFly 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: coinFly60fps 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          will-change: transform, opacity;
         }
       `}</style>
       <img
         src={chipSrc}
         alt="Coin"
-        className="coin-flying"
+        className="coin-flying-smooth"
         style={{
-          width: "24px",
-          height: "24px",
-          left: "50%",
-          bottom: "80px",
-          transform: "translateX(-50%)",
-          "--tx": `${targetPosition.x - window.innerWidth / 2}px`,
-          "--ty": `${targetPosition.y - window.innerHeight + 80}px`,
+          width: "28px",
+          height: "28px",
+          left: `${startPos.x}px`,
+          top: `${startPos.y}px`,
+          transform: "translate(-50%, -50%)",
+          "--dx": `${deltaX}px`,
+          "--dy": `${deltaY}px`,
         } as React.CSSProperties}
       />
     </>
