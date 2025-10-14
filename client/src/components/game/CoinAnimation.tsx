@@ -8,8 +8,8 @@ import chip10k from "@/assets/chip-10k.png";
 interface CoinAnimationProps {
   amount: number;
   targetId: string;
-  startPosition: { x: number; y: number }; // Now expects percentage values (0-100)
   onComplete: () => void;
+  startPosition?: { x: number; y: number };
 }
 
 const CHIP_IMAGES = {
@@ -26,19 +26,27 @@ export default function CoinAnimation({ amount, targetId, onComplete, startPosit
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const targetElement = document.getElementById(`${targetId}-betting-area`);
-    const gameContainer = document.querySelector('.mobile-viewport');
-    if (!targetElement || !gameContainer) return;
+    const targetMap: Record<string, string> = {
+      'dragon': 'dragon-betting-area',
+      'tiger': 'tiger-betting-area',
+      'tie': 'tie-betting-area'
+    };
+    
+    const actualTargetId = targetMap[targetId] || targetId;
+    const targetElement = document.getElementById(actualTargetId);
+    
+    if (targetElement) {
+      const targetRect = targetElement.getBoundingClientRect();
+      const centerX = targetRect.left + targetRect.width / 2;
+      const centerY = targetRect.top + targetRect.height / 2;
+      setTargetPosition({ x: centerX, y: centerY });
+    }
 
-    const targetRect = targetElement.getBoundingClientRect();
-    const containerRect = gameContainer.getBoundingClientRect();
-
-    // Convert target to percentage position
-    const endX = ((targetRect.left + targetRect.width / 2 - containerRect.left) / containerRect.width) * 100;
-    const endY = ((targetRect.top + targetRect.height / 2 - containerRect.top) / containerRect.height) * 100;
-    setTargetPosition({ x: endX, y: endY });
-
-    setStartPos(startPosition);
+    if (startPosition) {
+      setStartPos(startPosition);
+    } else {
+      setStartPos({ x: window.innerWidth / 2, y: window.innerHeight - 80 });
+    }
 
     const timer = setTimeout(() => {
       setIsAnimating(false);
@@ -91,11 +99,11 @@ export default function CoinAnimation({ amount, targetId, onComplete, startPosit
         style={{
           width: "28px",
           height: "28px",
-          left: `${startPos.x}%`,
-          top: `${startPos.y}%`,
+          left: `${startPos.x}px`,
+          top: `${startPos.y}px`,
           transform: "translate(-50%, -50%)",
-          "--dx": `${deltaX}%`,
-          "--dy": `${deltaY}%`,
+          "--dx": `${deltaX}px`,
+          "--dy": `${deltaY}px`,
         } as React.CSSProperties}
       />
     </>

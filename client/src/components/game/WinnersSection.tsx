@@ -91,17 +91,10 @@ export default function WinnersSection({
 
           const playerElement = document.getElementById(`winner-avatar-${player.id}`);
           if (playerElement) {
-            // Get the game container to calculate percentage-based positions
-            const gameContainer = document.querySelector('.mobile-viewport');
-            if (!gameContainer) return;
-            
             const rect = playerElement.getBoundingClientRect();
-            const containerRect = gameContainer.getBoundingClientRect();
-            
-            // Convert to percentage position relative to game container
             const startPos = {
-              x: ((rect.left + rect.width / 2 - containerRect.left) / containerRect.width) * 100,
-              y: ((rect.top + rect.height / 2 - containerRect.top) / containerRect.height) * 100
+              x: rect.left + rect.width / 2,
+              y: rect.top + rect.height / 2
             };
 
             const animId = `${Date.now()}_${Math.random()}`;
