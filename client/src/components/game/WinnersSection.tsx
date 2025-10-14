@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import avatar1 from '../../assets/avatar1.png';
 import avatar2 from '../../assets/avatar2.png';
 import avatar3 from '../../assets/avatar3.png';
@@ -49,6 +49,7 @@ export default function WinnersSection({
   const [bouncingAvatars, setBouncingAvatars] = useState<Set<string>>(new Set());
   const [playerBets, setPlayerBets] = useState<Map<string, PlayerBet>>(new Map());
   const [playerBalances, setPlayerBalances] = useState<Map<string, number>>(new Map());
+  const playerBetsRef = useRef<Map<string, PlayerBet>>(new Map());
 
   useEffect(() => {
     const winnersList = [...winners.slice(0, 3)];
@@ -72,11 +73,15 @@ export default function WinnersSection({
   }, [winners]);
 
   useEffect(() => {
+    playerBetsRef.current = playerBets;
+  }, [playerBets]);
+
+  useEffect(() => {
     if (currentPhase === "betting" && gameSeconds >= 2 && gameSeconds <= 13) {
       const shouldBet = Math.random() < 0.15;
       
       if (shouldBet) {
-        const availablePlayers = displayWinners.filter(w => w.amount > 0 && !playerBets.has(w.id));
+        const availablePlayers = displayWinners.filter(w => w.amount > 0 && !playerBetsRef.current.has(w.id));
         if (availablePlayers.length > 0) {
           const player = availablePlayers[Math.floor(Math.random() * availablePlayers.length)];
           const betTypes = ['dragon', 'tiger', 'tie'];
@@ -110,7 +115,10 @@ export default function WinnersSection({
               });
             }, 400);
 
-            setPlayerBets(prev => new Map(prev).set(player.id, { playerId: player.id, betType, amount: betAmount }));
+            const bet = { playerId: player.id, betType, amount: betAmount };
+            playerBetsRef.current = new Map(playerBetsRef.current).set(player.id, bet);
+            setPlayerBets(prev => new Map(prev).set(player.id, bet));
+            
             setPlayerBalances(prev => {
               const next = new Map(prev);
               const currentBalance = next.get(player.id) || player.amount;
@@ -133,9 +141,12 @@ export default function WinnersSection({
     }
 
     if (gameSeconds === 0) {
+      playerBetsRef.current = new Map();
       setPlayerBets(new Map());
     }
+  }, [currentPhase, gameSeconds, displayWinners, onPlaceBet]);
 
+  useEffect(() => {
     if (gameSeconds === 21 && roundWinner) {
       playerBets.forEach((bet, playerId) => {
         if (bet.betType === roundWinner) {
@@ -157,7 +168,7 @@ export default function WinnersSection({
         }
       });
     }
-  }, [currentPhase, gameSeconds, displayWinners, onPlaceBet, playerBets, roundWinner]);
+  }, [gameSeconds, roundWinner]);
 
   const removeAnimation = (id: string) => {
     setAnimations(prev => prev.filter(a => a.id !== id));
