@@ -384,6 +384,9 @@ export default function BettingAreaWithBets({
             { id: '2', avatar: '', username: 'G260679', amount: 877480 },
             { id: '3', avatar: '', username: 'Zoe', amount: 88237 }
           ]}
+          currentPhase={currentPhase}
+          gameSeconds={gameSeconds}
+          roundWinner={currentRound?.winner || null}
         />
       </div>
 
@@ -403,6 +406,9 @@ export default function BettingAreaWithBets({
             { id: '2', avatar: '', username: 'Lucky2', amount: 350000 },
             { id: '3', avatar: '', username: 'Lucky3', amount: 125000 }
           ]}
+          currentPhase={currentPhase}
+          gameSeconds={gameSeconds}
+          roundWinner={currentRound?.winner || null}
         />
       </div>
 
