@@ -7,6 +7,7 @@ import BettingNotification from "./BettingNotification";
 import StarTrendAnimation from "./StarTrendAnimation";
 import WinnersSection from "./WinnersSection";
 import LuckySection from "./LuckySection";
+import ChipDisplay from "./ChipDisplay";
 import { useState, useEffect } from "react";
 import { useGameManagerContext } from "@/contexts/GameManagerContext";
 import CoinAnimation from "./CoinAnimation";
@@ -459,6 +460,7 @@ export default function BettingAreaWithBets({
         >
           {getTotalBets("tie").toLocaleString()}
         </span>
+        <ChipDisplay amount={getTotalBets("tie")} betType="tie" />
         <div className="absolute -inset-4 rounded-xl bg-gradient-to-br from-emerald-700 to-cyan-700 opacity-20 blur-lg pointer-events-none"></div>
         <div className="relative flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-emerald-800 to-teal-800">
           <span
@@ -489,6 +491,7 @@ export default function BettingAreaWithBets({
         >
           {getTotalBets("dragon").toLocaleString()}
         </span>
+        <ChipDisplay amount={getTotalBets("dragon")} betType="dragon" />
         <div className="relative -inset-4 rounded-xl bg-gradient-to-br from-blue-700 to-sky-700 opacity-20 blur-lg pointer-events-none"></div>
         <div className="relative flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-blue-800 to-blue-800">
           <span
@@ -526,6 +529,7 @@ export default function BettingAreaWithBets({
         >
           {getTotalBets("tiger").toLocaleString()}
         </span>
+        <ChipDisplay amount={getTotalBets("tiger")} betType="tiger" />
         <div className="relative -inset-4 rounded-xl bg-gradient-to-br from-red-700 to-yellow-700 opacity-20 blur-lg pointer-events-none"></div>
         <div className="relative flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-yellow-800 to-red-800">
           <span
